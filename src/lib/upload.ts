@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import crypto from "crypto";
-import { getBucket } from "./firebaseAdmin";
+import { put, del } from "@vercel/blob";
 
 const MAX_WIDTH = 1920;
 const MAX_HEIGHT = 1920;
@@ -39,40 +39,22 @@ export async function saveUploadedImage(
     .webp({ quality: 82 })
     .toBuffer();
 
-  const objectPath = `${folder}/${Date.now()}-${crypto.randomUUID()}.webp`;
-  const bucket = getBucket();
-  const blob = bucket.file(objectPath);
-  const saveOptions = {
-    metadata: {
-      contentType: "image/webp",
-      cacheControl: "public, max-age=31536000, immutable",
-    },
-  };
+  const pathname = `${folder}/${Date.now()}-${crypto.randomUUID()}.webp`;
 
-  try {
-    // Ask for a public-read ACL on upload (one request instead of an
-    // upload + a separate makePublic() call).
-    await blob.save(outputBuffer, { ...saveOptions, public: true });
-  } catch {
-    // Buckets with "uniform bucket-level access" enabled reject per-object
-    // ACLs outright — retry without one. The file is still publicly
-    // readable as long as the bucket's IAM grants allUsers the
-    // "Storage Object Viewer" role (see README).
-    await blob.save(outputBuffer, saveOptions);
-  }
+  const blob = await put(pathname, outputBuffer, {
+    access: "public",
+    contentType: "image/webp",
+    cacheControlMaxAge: 31536000,
+  });
 
-  return `https://storage.googleapis.com/${bucket.name}/${objectPath}`;
+  return blob.url;
 }
 
 export function isManagedMediaUrl(url: string) {
-  return url.startsWith("https://storage.googleapis.com/");
+  return url.includes(".public.blob.vercel-storage.com/");
 }
 
 export async function deleteUploadedImage(mediaUrl: string) {
   if (!isManagedMediaUrl(mediaUrl)) return;
-  const bucket = getBucket();
-  const prefix = `https://storage.googleapis.com/${bucket.name}/`;
-  if (!mediaUrl.startsWith(prefix)) return;
-  const objectPath = decodeURIComponent(mediaUrl.slice(prefix.length));
-  await bucket.file(objectPath).delete({ ignoreNotFound: true }).catch(() => undefined);
+  await del(mediaUrl).catch(() => undefined);
 }
