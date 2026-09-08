@@ -7,7 +7,7 @@ import {
   getServiceImages,
   removeServiceImage,
 } from "@/lib/serviceImages";
-import { deleteUploadedImage } from "@/lib/upload";
+import { deleteUploadedImage, isManagedMediaUrl } from "@/lib/upload";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +34,7 @@ export async function POST(
 
   const body = await request.json().catch(() => null);
   const url = typeof body?.url === "string" ? body.url : "";
-  if (!url.startsWith("/api/media/")) {
+  if (!isManagedMediaUrl(url)) {
     return NextResponse.json({ error: "URL de imagen inválida." }, { status: 400 });
   }
 

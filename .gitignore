@@ -36,13 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-# uploaded media, served at runtime via /api/media (persisted only on the
-# deployment's disk, not in git — see src/lib/upload.ts)
-/uploads/
-
-# runtime data written by the admin panel (seeded copies live in data/*.example.json)
-/data/properties.json
-/data/service-images.json
+# Firebase service account keys — never commit these (use env vars instead,
+# see README.md). Ignored defensively in case one gets downloaded here.
+*firebase-adminsdk*.json
+serviceAccountKey.json
 
 # typescript
 *.tsbuildinfo

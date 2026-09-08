@@ -21,11 +21,6 @@ import FadeIn from "@/components/FadeIn";
 
 export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const properties = await getAllProperties();
-  return properties.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({
   params,
 }: PageProps<"/proyectos/[slug]">): Promise<Metadata> {

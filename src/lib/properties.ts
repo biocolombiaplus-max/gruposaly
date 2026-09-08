@@ -1,4 +1,4 @@
-import { readJson, writeJson } from "./db";
+import { getDb } from "./firebaseAdmin";
 import { slugify, type Property } from "./propertyTypes";
 
 export type { Property, PropertyStatus, PropertyType } from "./propertyTypes";
@@ -8,24 +8,43 @@ export {
   slugify,
 } from "./propertyTypes";
 
-const FILE = "properties.json";
-const EXAMPLE = "properties.example.json";
+const COLLECTION = "properties";
+
+function collection() {
+  return getDb().collection(COLLECTION);
+}
 
 export async function getAllProperties(): Promise<Property[]> {
-  const properties = await readJson<Property[]>(FILE, EXAMPLE, []);
+  const snapshot = await collection().get();
+  const properties = snapshot.docs.map((doc) => doc.data() as Property);
   return properties.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 }
 
 export async function getPropertyBySlug(slug: string) {
-  const properties = await getAllProperties();
-  return properties.find((p) => p.slug === slug) ?? null;
+  const snapshot = await collection().where("slug", "==", slug).limit(1).get();
+  if (snapshot.empty) return null;
+  return snapshot.docs[0].data() as Property;
 }
 
 export async function getPropertyById(id: string) {
-  const properties = await getAllProperties();
-  return properties.find((p) => p.id === id) ?? null;
+  const doc = await collection().doc(id).get();
+  return doc.exists ? (doc.data() as Property) : null;
+}
+
+async function uniqueSlug(base: string, excludeId?: string) {
+  const baseSlug = slugify(base) || "inmueble";
+  let slug = baseSlug;
+  let counter = 1;
+  // Small collection (property listings), a query per candidate is fine.
+  while (true) {
+    const snapshot = await collection().where("slug", "==", slug).limit(2).get();
+    const clashes = snapshot.docs.some((doc) => doc.id !== excludeId);
+    if (!clashes) return slug;
+    counter += 1;
+    slug = `${baseSlug}-${counter}`;
+  }
 }
 
 export async function createProperty(
@@ -33,24 +52,17 @@ export async function createProperty(
     slug?: string;
   }
 ): Promise<Property> {
-  const properties = await readJson<Property[]>(FILE, EXAMPLE, []);
-  const baseSlug = slugify(data.slug || data.title) || "inmueble";
-  let slug = baseSlug;
-  let counter = 1;
-  while (properties.some((p) => p.slug === slug)) {
-    counter += 1;
-    slug = `${baseSlug}-${counter}`;
-  }
+  const ref = collection().doc();
+  const slug = await uniqueSlug(data.slug || data.title);
   const now = new Date().toISOString();
   const property: Property = {
     ...data,
-    id: crypto.randomUUID(),
+    id: ref.id,
     slug,
     createdAt: now,
     updatedAt: now,
   };
-  properties.push(property);
-  await writeJson(FILE, properties);
+  await ref.set(property);
   return property;
 }
 
@@ -58,41 +70,32 @@ export async function updateProperty(
   id: string,
   data: Partial<Omit<Property, "id" | "createdAt">>
 ): Promise<Property | null> {
-  const properties = await readJson<Property[]>(FILE, EXAMPLE, []);
-  const index = properties.findIndex((p) => p.id === id);
-  if (index === -1) return null;
+  const ref = collection().doc(id);
+  const existing = await ref.get();
+  if (!existing.exists) return null;
+  const current = existing.data() as Property;
 
-  let slug = properties[index].slug;
-  if (data.slug && data.slug !== slug) {
-    const baseSlug = slugify(data.slug) || slug;
-    let candidate = baseSlug;
-    let counter = 1;
-    while (
-      properties.some((p) => p.slug === candidate && p.id !== id)
-    ) {
-      counter += 1;
-      candidate = `${baseSlug}-${counter}`;
-    }
-    slug = candidate;
-  }
+  const slug =
+    data.slug && data.slug !== current.slug
+      ? await uniqueSlug(data.slug, id)
+      : current.slug;
 
   const updated: Property = {
-    ...properties[index],
+    ...current,
     ...data,
     slug,
-    id: properties[index].id,
-    createdAt: properties[index].createdAt,
+    id: current.id,
+    createdAt: current.createdAt,
     updatedAt: new Date().toISOString(),
   };
-  properties[index] = updated;
-  await writeJson(FILE, properties);
+  await ref.set(updated);
   return updated;
 }
 
 export async function deleteProperty(id: string): Promise<boolean> {
-  const properties = await readJson<Property[]>(FILE, EXAMPLE, []);
-  const next = properties.filter((p) => p.id !== id);
-  if (next.length === properties.length) return false;
-  await writeJson(FILE, next);
+  const ref = collection().doc(id);
+  const existing = await ref.get();
+  if (!existing.exists) return false;
+  await ref.delete();
   return true;
 }
