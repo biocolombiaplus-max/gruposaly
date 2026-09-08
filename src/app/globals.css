@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #fff8ee;
+  --color-brand-100: #ffedd2;
+  --color-brand-200: #ffd8a3;
+  --color-brand-300: #ffbc6a;
+  --color-brand-400: #ff9a35;
+  --color-brand-500: #fb7d16;
+  --color-brand-600: #e2650c;
+  --color-brand-700: #bb4c0c;
+  --color-brand-800: #953c12;
+  --color-brand-900: #793312;
+
+  --color-ink-950: #08090b;
+  --color-ink-900: #101216;
+  --color-ink-800: #191c22;
+  --color-ink-700: #23272f;
+  --color-ink-600: #333944;
+  --color-ink-500: #4b525f;
+
+  --font-display: "Grupo Saly Display", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  --animate-fade-up: fade-up 0.7s ease-out both;
+  --animate-pulse-glow: pulse-glow 2.4s ease-in-out infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-marquee: marquee 28s linear infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+    }
+    50% {
+      box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: #f5f4f2;
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-brand-500);
+  color: #08090b;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.bg-noise {
+  background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.06) 1px,
+      transparent 0
+    );
+  background-size: 22px 22px;
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+/* Standardized media frame: whatever size an admin uploads, it always
+   displays edge-to-edge inside a fixed, responsive box across the site. */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-ink-800), var(--color-ink-900));
+}
+
+.media-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--color-brand-600);
+  border-radius: 999px;
+}

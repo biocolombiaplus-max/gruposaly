@@ -1,0 +1,25 @@
+import { redirect } from "next/navigation";
+import { getIsAdminAuthenticated } from "@/lib/auth";
+import { getAllServiceImages } from "@/lib/serviceImages";
+import { getAllProperties } from "@/lib/properties";
+import AdminDashboard from "@/components/admin/AdminDashboard";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminDashboardPage() {
+  if (!(await getIsAdminAuthenticated())) {
+    redirect("/admin/login");
+  }
+
+  const [serviceImages, properties] = await Promise.all([
+    getAllServiceImages(),
+    getAllProperties(),
+  ]);
+
+  return (
+    <AdminDashboard
+      initialServiceImages={serviceImages}
+      initialProperties={properties}
+    />
+  );
+}
