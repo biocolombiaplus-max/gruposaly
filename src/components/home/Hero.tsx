@@ -11,7 +11,7 @@ interface HeroProps {
 
 export default function Hero({ backgroundImage }: HeroProps) {
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-ink-950 pt-24">
+    <section className="relative flex min-h-[100svh] items-start overflow-hidden bg-ink-950 pt-28 lg:items-center lg:pt-24">
       <div className="absolute inset-0">
         {backgroundImage && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -38,7 +38,7 @@ export default function Hero({ backgroundImage }: HeroProps) {
         )}
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-5 py-16 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:py-20">
+      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-5 py-8 sm:px-8 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-20">
         <div>
           <motion.div
             initial={{ opacity: 0, y: 16 }}

@@ -1,5 +1,6 @@
 import { ClipboardList, Compass, HardHat, KeyRound } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const STEPS = [
   {
@@ -56,6 +57,13 @@ export default function ProcessSection() {
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={0.3} className="mt-14 flex justify-center">
+          <WhatsAppButton
+            message="Hola, quiero iniciar mi proyecto con Grupo Saly. ¿Cómo empezamos?"
+            label="Iniciar mi Proyecto"
+          />
+        </FadeIn>
       </div>
     </section>
   );

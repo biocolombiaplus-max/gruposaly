@@ -116,11 +116,21 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
         </div>
 
         <button
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
+          className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-ink-950 shadow-lg shadow-brand-900/50 transition-transform active:scale-90 lg:hidden"
           onClick={() => setMobileOpen((v) => !v)}
-          aria-label="Abrir menú"
+          aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {!mobileOpen && (
+            <span className="absolute inset-0 rounded-full bg-brand-400/50 blur-md animate-soft-glow" />
+          )}
+          <span className="relative">
+            {mobileOpen ? (
+              <X className="h-5 w-5" strokeWidth={2.4} />
+            ) : (
+              <Menu className="h-5 w-5" strokeWidth={2.4} />
+            )}
+          </span>
         </button>
       </div>
 

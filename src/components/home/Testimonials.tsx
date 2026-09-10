@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const TESTIMONIALS = [
   {
@@ -55,6 +56,16 @@ export default function Testimonials() {
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={0.25} className="mt-14 flex flex-col items-center gap-3 text-center">
+          <p className="text-sm text-white/50">
+            Sé el próximo cliente satisfecho de Grupo Saly.
+          </p>
+          <WhatsAppButton
+            message="Hola, quiero que mi proyecto sea el próximo caso de éxito de Grupo Saly."
+            label="Quiero mi Proyecto"
+          />
+        </FadeIn>
       </div>
     </section>
   );

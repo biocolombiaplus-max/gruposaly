@@ -1,5 +1,6 @@
 import { Award, HeartHandshake, ShieldCheck, Timer } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const POINTS = [
   {
@@ -65,6 +66,12 @@ export default function AboutSection({ backgroundImage }: AboutSectionProps) {
             cronograma, el presupuesto y la calidad, para que tú te enfoques
             en tu negocio o tu familia mientras nosotros construimos.
           </p>
+          <div className="mt-8">
+            <WhatsAppButton
+              message="Hola, quiero conocer más sobre Grupo Saly y sus proyectos."
+              label="Conoce Más por WhatsApp"
+            />
+          </div>
         </FadeIn>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

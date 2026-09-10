@@ -18,12 +18,14 @@ export default function Logo({
   if (src) {
     return (
       <span className={clsx("inline-flex items-center", className)}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt="Grupo Saly"
-          className={clsx("h-9 w-auto object-contain sm:h-11", markClassName)}
-        />
+        <span className="flex items-center rounded-xl bg-white/95 px-2.5 py-1.5 shadow-md shadow-black/10 ring-1 ring-black/5 sm:px-3 sm:py-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt="Grupo Saly"
+            className={clsx("h-7 w-auto object-contain sm:h-9", markClassName)}
+          />
+        </span>
       </span>
     );
   }
