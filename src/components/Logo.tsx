@@ -22,7 +22,7 @@ export default function Logo({
         <img
           src={src}
           alt="Grupo Saly"
-          className={clsx("h-14 w-auto object-contain sm:h-16", markClassName)}
+          className={clsx("h-20 w-auto object-contain sm:h-24", markClassName)}
         />
       </span>
     );
