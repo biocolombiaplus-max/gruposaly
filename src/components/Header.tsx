@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Home, Menu, X } from "lucide-react";
 import clsx from "clsx";
 import Logo from "./Logo";
 import WhatsAppButton from "./WhatsAppButton";
@@ -141,6 +141,14 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
         )}
       >
         <div className="flex max-h-[75vh] flex-col gap-1 overflow-y-auto px-5 py-4">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-semibold text-white hover:bg-white/5"
+          >
+            <Home className="h-4 w-4 text-brand-400" />
+            Volver al Inicio
+          </Link>
+          <div className="my-2 h-px bg-white/10" />
           <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-widest text-white/40">
             Servicios
           </p>
