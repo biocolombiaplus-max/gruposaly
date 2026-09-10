@@ -29,6 +29,12 @@ export default function Header({ logoUrl, logoSize, logoAlign = "left" }: Header
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
   const [prevPathname, setPrevPathname] = useState(pathname);
+  // A big centered logo is absolutely positioned so it can float freely
+  // over the hero on first load, but that means it isn't bound by the
+  // header row's height — once scrolled and the header gets a solid
+  // backdrop, an oversized logo would spill past that backdrop's edges.
+  // Compact it to the standard size once scrolled, like most sites do.
+  const centerLogoSize = logoAlign === "center" && scrolled ? "md" : logoSize;
 
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
@@ -52,13 +58,18 @@ export default function Header({ logoUrl, logoSize, logoAlign = "left" }: Header
           : "bg-gradient-to-b from-ink-950/70 to-transparent"
       )}
     >
-      <div className="relative mx-auto flex max-w-7xl items-center px-5 py-3.5 sm:px-8">
+      <div
+        className={clsx(
+          "relative mx-auto flex max-w-7xl items-center px-5 sm:px-8",
+          logoAlign === "center" ? "py-4 sm:py-5" : "py-3.5"
+        )}
+      >
         {logoAlign === "center" ? (
           <Link
             href="/"
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
           >
-            <Logo src={logoUrl} size={logoSize} />
+            <Logo src={logoUrl} size={centerLogoSize} />
           </Link>
         ) : (
           <Link

@@ -169,9 +169,9 @@ export default function Footer({ logoUrl, logoSize, socialLinks = {} }: FooterPr
           <p>Construcción · Remodelación · Inmobiliaria</p>
         </div>
       </div>
-      {/* Reserves space so the fixed WhatsApp widget never sits on top of
+      {/* Reserves space so the fixed WhatsApp button never sits on top of
           this content when the page is scrolled all the way down. */}
-      <div className="h-24 sm:h-8" aria-hidden="true" />
+      <div className="h-14 sm:h-4" aria-hidden="true" />
     </footer>
   );
 }

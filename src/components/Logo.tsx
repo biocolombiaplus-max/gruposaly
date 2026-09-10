@@ -11,9 +11,9 @@ interface LogoProps {
 }
 
 const SIZE_CLASSES: Record<LogoSize, string> = {
-  md: "h-14 w-auto object-contain sm:h-16",
-  lg: "h-20 w-auto object-contain sm:h-24",
-  xl: "h-24 w-auto object-contain sm:h-32",
+  md: "h-16 w-auto object-contain sm:h-20",
+  lg: "h-24 w-auto object-contain sm:h-28",
+  xl: "h-28 w-auto object-contain sm:h-36",
 };
 
 export default function Logo({
@@ -31,7 +31,11 @@ export default function Logo({
         <img
           src={src}
           alt="Grupo Saly"
-          className={clsx(SIZE_CLASSES[size], markClassName)}
+          className={clsx(
+            "transition-[height] duration-300 ease-out",
+            SIZE_CLASSES[size],
+            markClassName
+          )}
         />
       </span>
     );
