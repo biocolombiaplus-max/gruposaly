@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ backgroundImage, cardImage }: HeroProps) {
   return (
-    <section className="relative flex min-h-[100svh] items-start overflow-hidden bg-ink-950 pt-[8.25rem] lg:items-center lg:pt-[7.5rem]">
+    <section className="relative flex min-h-[100svh] items-start overflow-hidden bg-ink-950 pt-[9.5rem] lg:items-center lg:pt-[8rem]">
       <div className="absolute inset-0">
         {backgroundImage && (
           // eslint-disable-next-line @next/next/no-img-element
