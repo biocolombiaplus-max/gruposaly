@@ -27,6 +27,14 @@ function getApp(): App {
 let firestore: Firestore | null = null;
 
 export function getDb(): Firestore {
-  if (!firestore) firestore = getFirestore(getApp());
+  if (!firestore) {
+    firestore = getFirestore(getApp());
+    // Optional fields (areaM2, bedrooms, priceLabel, ...) are passed as
+    // `undefined` when left blank in the admin forms — Firestore rejects
+    // `undefined` field values by default and throws, which otherwise
+    // crashes the route handler with no JSON body (surfacing to the
+    // client as a confusing "Unexpected end of JSON input").
+    firestore.settings({ ignoreUndefinedProperties: true });
+  }
   return firestore;
 }

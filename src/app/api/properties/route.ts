@@ -48,21 +48,25 @@ export async function POST(request: NextRequest) {
     ? body.features.filter((f: unknown) => typeof f === "string" && f.trim())
     : [];
 
-  const property = await createProperty({
-    title,
-    type,
-    status,
-    price,
-    priceLabel: typeof body.priceLabel === "string" ? body.priceLabel : undefined,
-    location,
-    areaM2: Number.isFinite(Number(body.areaM2)) && body.areaM2 !== "" ? Number(body.areaM2) : undefined,
-    bedrooms: Number.isFinite(Number(body.bedrooms)) && body.bedrooms !== "" ? Number(body.bedrooms) : undefined,
-    bathrooms: Number.isFinite(Number(body.bathrooms)) && body.bathrooms !== "" ? Number(body.bathrooms) : undefined,
-    parking: Number.isFinite(Number(body.parking)) && body.parking !== "" ? Number(body.parking) : undefined,
-    description: typeof body.description === "string" ? body.description : "",
-    features,
-    images,
-  });
-
-  return NextResponse.json({ property }, { status: 201 });
+  try {
+    const property = await createProperty({
+      title,
+      type,
+      status,
+      price,
+      priceLabel: typeof body.priceLabel === "string" ? body.priceLabel : undefined,
+      location,
+      areaM2: Number.isFinite(Number(body.areaM2)) && body.areaM2 !== "" ? Number(body.areaM2) : undefined,
+      bedrooms: Number.isFinite(Number(body.bedrooms)) && body.bedrooms !== "" ? Number(body.bedrooms) : undefined,
+      bathrooms: Number.isFinite(Number(body.bathrooms)) && body.bathrooms !== "" ? Number(body.bathrooms) : undefined,
+      parking: Number.isFinite(Number(body.parking)) && body.parking !== "" ? Number(body.parking) : undefined,
+      description: typeof body.description === "string" ? body.description : "",
+      features,
+      images,
+    });
+    return NextResponse.json({ property }, { status: 201 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "No se pudo publicar el inmueble.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

@@ -11,6 +11,24 @@ import {
   type PropertyStatus,
   type PropertyType,
 } from "@/lib/propertyTypes";
+import { COLOMBIA_DEPARTMENTS, OTHER_CITY_OPTION } from "@/lib/colombiaLocations";
+
+function parseLocation(location: string) {
+  const parts = location.split(",");
+  if (parts.length < 2) return { departamento: "", ciudad: "", ciudadManual: location };
+
+  const cityPart = parts[0].trim();
+  const deptPart = parts.slice(1).join(",").trim();
+  const dept = COLOMBIA_DEPARTMENTS.find(
+    (d) => d.name.toLowerCase() === deptPart.toLowerCase()
+  );
+  if (!dept) return { departamento: "", ciudad: "", ciudadManual: location };
+
+  const city = dept.cities.find((c) => c.toLowerCase() === cityPart.toLowerCase());
+  return city
+    ? { departamento: dept.name, ciudad: city, ciudadManual: "" }
+    : { departamento: dept.name, ciudad: OTHER_CITY_OPTION, ciudadManual: cityPart };
+}
 
 interface PropertyFormProps {
   initial?: Property;
@@ -25,7 +43,10 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
   const [title, setTitle] = useState(initial?.title ?? "");
   const [type, setType] = useState<PropertyType>(initial?.type ?? "casa");
   const [status, setStatus] = useState<PropertyStatus>(initial?.status ?? "disponible");
-  const [location, setLocation] = useState(initial?.location ?? "");
+  const initialLocation = parseLocation(initial?.location ?? "");
+  const [departamento, setDepartamento] = useState(initialLocation.departamento);
+  const [ciudad, setCiudad] = useState(initialLocation.ciudad);
+  const [ciudadManual, setCiudadManual] = useState(initialLocation.ciudadManual);
   const [price, setPrice] = useState(initial?.price?.toString() ?? "");
   const [priceLabel, setPriceLabel] = useState(initial?.priceLabel ?? "");
   const [areaM2, setAreaM2] = useState(initial?.areaM2?.toString() ?? "");
@@ -42,9 +63,17 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
 
   const isEdit = Boolean(initial);
   const showResidentialFields = type === "casa" || type === "edificio";
+  const citiesForDept =
+    COLOMBIA_DEPARTMENTS.find((d) => d.name === departamento)?.cities ?? [];
+  const resolvedCity = ciudad === OTHER_CITY_OPTION ? ciudadManual.trim() : ciudad;
+  const location = departamento && resolvedCity ? `${resolvedCity}, ${departamento}` : "";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!location) {
+      setError("Selecciona el departamento y la ciudad del inmueble.");
+      return;
+    }
     setSaving(true);
     setError(null);
 
@@ -76,8 +105,15 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
           body: JSON.stringify(payload),
         }
       );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "No se pudo guardar el inmueble.");
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(
+          data?.error || `No se pudo guardar el inmueble (código ${res.status}).`
+        );
+      }
+      if (!data?.property) {
+        throw new Error("El servidor no devolvió el inmueble guardado.");
+      }
       onSaved(data.property as Property);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado.");
@@ -149,17 +185,59 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
           </select>
         </div>
 
-        <div className="sm:col-span-2">
+        <div>
           <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
-            Ubicación *
+            Departamento *
           </label>
-          <input
+          <select
             required
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Rionegro, Antioquia"
+            value={departamento}
+            onChange={(e) => {
+              setDepartamento(e.target.value);
+              setCiudad("");
+              setCiudadManual("");
+            }}
             className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
-          />
+          >
+            <option value="">Selecciona...</option>
+            {COLOMBIA_DEPARTMENTS.map((d) => (
+              <option key={d.name} value={d.name}>
+                {d.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+            Ciudad / Municipio *
+          </label>
+          <select
+            required
+            disabled={!departamento}
+            value={ciudad}
+            onChange={(e) => setCiudad(e.target.value)}
+            className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500 disabled:opacity-50"
+          >
+            <option value="">
+              {departamento ? "Selecciona..." : "Primero elige el departamento"}
+            </option>
+            {citiesForDept.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+            <option value={OTHER_CITY_OPTION}>{OTHER_CITY_OPTION}</option>
+          </select>
+          {ciudad === OTHER_CITY_OPTION && (
+            <input
+              required
+              value={ciudadManual}
+              onChange={(e) => setCiudadManual(e.target.value)}
+              placeholder="Escribe el nombre del municipio"
+              className="mt-2 w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+            />
+          )}
         </div>
 
         <div>

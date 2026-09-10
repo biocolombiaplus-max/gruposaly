@@ -64,26 +64,31 @@ export async function PUT(
 
   const removedImages = existing.images.filter((img) => !images.includes(img));
 
-  const property = await updateProperty(id, {
-    title,
-    type,
-    status,
-    price,
-    priceLabel: typeof body.priceLabel === "string" ? body.priceLabel : existing.priceLabel,
-    location,
-    areaM2: body.areaM2 === "" ? undefined : Number.isFinite(Number(body.areaM2)) ? Number(body.areaM2) : existing.areaM2,
-    bedrooms: body.bedrooms === "" ? undefined : Number.isFinite(Number(body.bedrooms)) ? Number(body.bedrooms) : existing.bedrooms,
-    bathrooms: body.bathrooms === "" ? undefined : Number.isFinite(Number(body.bathrooms)) ? Number(body.bathrooms) : existing.bathrooms,
-    parking: body.parking === "" ? undefined : Number.isFinite(Number(body.parking)) ? Number(body.parking) : existing.parking,
-    description: typeof body.description === "string" ? body.description : existing.description,
-    features,
-    images,
-    slug: typeof body.slug === "string" && body.slug.trim() ? body.slug : undefined,
-  });
+  try {
+    const property = await updateProperty(id, {
+      title,
+      type,
+      status,
+      price,
+      priceLabel: typeof body.priceLabel === "string" ? body.priceLabel : existing.priceLabel,
+      location,
+      areaM2: body.areaM2 === "" ? undefined : Number.isFinite(Number(body.areaM2)) ? Number(body.areaM2) : existing.areaM2,
+      bedrooms: body.bedrooms === "" ? undefined : Number.isFinite(Number(body.bedrooms)) ? Number(body.bedrooms) : existing.bedrooms,
+      bathrooms: body.bathrooms === "" ? undefined : Number.isFinite(Number(body.bathrooms)) ? Number(body.bathrooms) : existing.bathrooms,
+      parking: body.parking === "" ? undefined : Number.isFinite(Number(body.parking)) ? Number(body.parking) : existing.parking,
+      description: typeof body.description === "string" ? body.description : existing.description,
+      features,
+      images,
+      slug: typeof body.slug === "string" && body.slug.trim() ? body.slug : undefined,
+    });
 
-  await Promise.all(removedImages.map((img) => deleteUploadedImage(img)));
+    await Promise.all(removedImages.map((img) => deleteUploadedImage(img)));
 
-  return NextResponse.json({ property });
+    return NextResponse.json({ property });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "No se pudo actualizar el inmueble.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
 
 export async function DELETE(
