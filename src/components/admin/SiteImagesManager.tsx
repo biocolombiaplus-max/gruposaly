@@ -67,7 +67,13 @@ export default function SiteImagesManager({
                     <MediaFrame
                       src={current}
                       alt={item.label}
-                      aspect={item.slot === "logo" ? "aspect-square" : "aspect-[4/3]"}
+                      aspect={
+                        item.slot === "logo"
+                          ? "aspect-square"
+                          : item.slot === "heroCard"
+                            ? "aspect-[4/5]"
+                            : "aspect-[4/3]"
+                      }
                       objectFit={item.slot === "logo" ? "contain" : "cover"}
                       imgClassName={item.slot === "logo" ? "p-3" : undefined}
                       className={item.slot === "logo" ? "bg-white/5" : undefined}

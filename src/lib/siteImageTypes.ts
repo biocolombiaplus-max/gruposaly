@@ -2,7 +2,7 @@
 // Kept separate from `siteImages.ts` so client bundles never pull in the
 // Firebase Admin SDK (and its Node-only gRPC dependencies) used there.
 
-export type SiteImageSlot = "logo" | "hero" | "about" | "cta";
+export type SiteImageSlot = "logo" | "hero" | "heroCard" | "about" | "cta";
 
 export const SITE_IMAGE_SLOTS: { slot: SiteImageSlot; label: string; hint: string }[] = [
   {
@@ -14,6 +14,11 @@ export const SITE_IMAGE_SLOTS: { slot: SiteImageSlot; label: string; hint: strin
     slot: "hero",
     label: "Imagen principal (Hero)",
     hint: "Foto de fondo grande en la parte superior de la página de inicio.",
+  },
+  {
+    slot: "heroCard",
+    label: "Tarjeta destacada del Hero",
+    hint: "Foto dentro del cuadrado que aparece junto al titular principal (solo se ve en pantallas grandes).",
   },
   {
     slot: "about",

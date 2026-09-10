@@ -31,7 +31,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero backgroundImage={siteImages.hero} />
+      <Hero backgroundImage={siteImages.hero} cardImage={siteImages.heroCard} />
       <TrustBar />
       <ServicesGrid
         serviceImages={serviceImages}

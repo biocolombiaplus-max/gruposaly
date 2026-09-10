@@ -7,9 +7,10 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 
 interface HeroProps {
   backgroundImage?: string | null;
+  cardImage?: string | null;
 }
 
-export default function Hero({ backgroundImage }: HeroProps) {
+export default function Hero({ backgroundImage, cardImage }: HeroProps) {
   return (
     <section className="relative flex min-h-[100svh] items-start overflow-hidden bg-ink-950 pt-[7.75rem] lg:items-center lg:pt-[7.25rem]">
       <div className="absolute inset-0">
@@ -132,7 +133,16 @@ export default function Hero({ backgroundImage }: HeroProps) {
           className="relative mx-auto hidden aspect-[4/5] w-full max-w-md lg:block"
         >
           <div className="absolute inset-0 rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 shadow-2xl shadow-black/50" />
-          <div className="absolute inset-6 overflow-hidden rounded-[2rem] bg-[conic-gradient(from_140deg,rgba(251,125,22,0.35),rgba(11,13,18,0.9),rgba(251,125,22,0.25))]" />
+          <div className="absolute inset-6 overflow-hidden rounded-[2rem] bg-[conic-gradient(from_140deg,rgba(251,125,22,0.35),rgba(11,13,18,0.9),rgba(251,125,22,0.25))]">
+            {cardImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={cardImage}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
           <div className="absolute inset-6 flex flex-col justify-end rounded-[2rem] bg-gradient-to-t from-ink-950/90 via-ink-950/10 to-transparent p-7">
             <p className="text-xs uppercase tracking-widest text-brand-300">
               Grupo Saly
