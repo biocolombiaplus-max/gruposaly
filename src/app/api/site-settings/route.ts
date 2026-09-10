@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getIsAdminAuthenticated } from "@/lib/auth";
 import { getSiteSettings, updateSiteSettings } from "@/lib/siteSettings";
-import type { LogoAlign, LogoSize } from "@/lib/siteSettingsTypes";
+import {
+  SOCIAL_PLATFORMS,
+  type LogoAlign,
+  type LogoSize,
+  type SocialLinks,
+} from "@/lib/siteSettingsTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +15,7 @@ const VALID_SIZES: LogoSize[] = ["md", "lg", "xl"];
 const VALID_ALIGNS: LogoAlign[] = ["left", "center", "right"];
 const MAX_ANNOUNCEMENTS = 12;
 const MAX_ANNOUNCEMENT_LENGTH = 120;
+const MAX_URL_LENGTH = 300;
 
 export async function GET() {
   const settings = await getSiteSettings();
@@ -51,6 +57,20 @@ export async function PUT(request: NextRequest) {
       .map((a: string) => a.trim().slice(0, MAX_ANNOUNCEMENT_LENGTH))
       .slice(0, MAX_ANNOUNCEMENTS);
     update.announcements = announcements;
+  }
+
+  if (body.socialLinks !== undefined) {
+    if (typeof body.socialLinks !== "object" || body.socialLinks === null) {
+      return NextResponse.json({ error: "Redes sociales inválidas." }, { status: 400 });
+    }
+    const socialLinks: SocialLinks = {};
+    for (const platform of SOCIAL_PLATFORMS) {
+      const url = (body.socialLinks as Record<string, unknown>)[platform];
+      if (typeof url === "string" && url.trim()) {
+        socialLinks[platform] = url.trim().slice(0, MAX_URL_LENGTH);
+      }
+    }
+    update.socialLinks = socialLinks;
   }
 
   try {

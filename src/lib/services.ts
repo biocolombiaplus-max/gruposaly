@@ -197,6 +197,9 @@ export const VENTAS_SERVICE = {
     "Hola, quiero información sobre los proyectos de vivienda en venta de Grupo Saly.",
 };
 
+export const DEFAULT_WHATSAPP_MESSAGE =
+  "Hola *Grupo Saly* 👋\n\nQuiero información sobre sus servicios de construcción, remodelación e inmuebles. ¿Podrían ayudarme?";
+
 export function getServiceBySlug(slug: string) {
   return SERVICES.find((s) => s.slug === slug);
 }

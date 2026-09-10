@@ -18,7 +18,11 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <AnnouncementBar messages={settings.announcements} />
       <Header logoUrl={logoUrl} logoSize={settings.logoSize} logoAlign={settings.logoAlign} />
       <main className="flex-1">{children}</main>
-      <Footer logoUrl={logoUrl} logoSize={settings.logoSize} />
+      <Footer
+        logoUrl={logoUrl}
+        logoSize={settings.logoSize}
+        socialLinks={settings.socialLinks}
+      />
       <WhatsAppFloatingButton />
     </>
   );

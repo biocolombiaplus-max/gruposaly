@@ -7,7 +7,7 @@ import { ChevronDown, Home, Menu, X } from "lucide-react";
 import clsx from "clsx";
 import Logo from "./Logo";
 import WhatsAppButton from "./WhatsAppButton";
-import { SERVICES, VENTAS_SERVICE } from "@/lib/services";
+import { DEFAULT_WHATSAPP_MESSAGE, SERVICES, VENTAS_SERVICE } from "@/lib/services";
 import type { LogoAlign, LogoSize } from "@/lib/siteSettingsTypes";
 
 const NAV_LINKS = [
@@ -140,7 +140,7 @@ export default function Header({ logoUrl, logoSize, logoAlign = "left" }: Header
 
         <div className={clsx(logoAlign === "center" ? "hidden" : "hidden lg:block")}>
           <WhatsAppButton
-            message="Hola, quiero información sobre los servicios de Grupo Saly."
+            message={DEFAULT_WHATSAPP_MESSAGE}
             label="Cotizar Ahora"
           />
         </div>
@@ -214,7 +214,7 @@ export default function Header({ logoUrl, logoSize, logoAlign = "left" }: Header
           ))}
           <div className="mt-3">
             <WhatsAppButton
-              message="Hola, quiero información sobre los servicios de Grupo Saly."
+              message={DEFAULT_WHATSAPP_MESSAGE}
               label="Cotizar Ahora"
               className="w-full"
             />

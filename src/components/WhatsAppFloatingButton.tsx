@@ -3,15 +3,23 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X } from "lucide-react";
-import { whatsappLink } from "@/lib/services";
+import { DEFAULT_WHATSAPP_MESSAGE, whatsappLink } from "@/lib/services";
 
 const BUBBLE_SESSION_KEY = "gs_wa_bubble_shown";
+const BUBBLE_SHOW_DELAY = 3200;
+const BUBBLE_AUTO_HIDE_DELAY = 9000;
+// Don't let the auto-popup cover the footer: skip/hide it whenever the
+// bottom of the page is this close to the bottom of the viewport.
+const FOOTER_PROXIMITY_PX = 320;
+
+function isNearPageBottom() {
+  const scrollBottom = window.scrollY + window.innerHeight;
+  return document.documentElement.scrollHeight - scrollBottom < FOOTER_PROXIMITY_PX;
+}
 
 export default function WhatsAppFloatingButton() {
   const [showBubble, setShowBubble] = useState(false);
-  const href = whatsappLink(
-    "Hola, quiero información sobre los servicios de Grupo Saly."
-  );
+  const href = whatsappLink(DEFAULT_WHATSAPP_MESSAGE);
 
   useEffect(() => {
     let alreadyShown = false;
@@ -23,19 +31,36 @@ export default function WhatsAppFloatingButton() {
     }
     if (alreadyShown) return;
 
-    const timer = setTimeout(() => {
-      setShowBubble(true);
+    const showTimer = setTimeout(() => {
       try {
         sessionStorage.setItem(BUBBLE_SESSION_KEY, "1");
       } catch {
         // ignore
       }
-    }, 3200);
-    return () => clearTimeout(timer);
+      // If the visitor already scrolled down to the footer/contact area by
+      // the time the delay elapses, showing the bubble would just cover the
+      // links they're looking at — skip it instead of nagging.
+      if (isNearPageBottom()) return;
+      setShowBubble(true);
+    }, BUBBLE_SHOW_DELAY);
+    return () => clearTimeout(showTimer);
   }, []);
 
+  useEffect(() => {
+    if (!showBubble) return;
+    const hideTimer = setTimeout(() => setShowBubble(false), BUBBLE_AUTO_HIDE_DELAY);
+    const handleScroll = () => {
+      if (isNearPageBottom()) setShowBubble(false);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearTimeout(hideTimer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [showBubble]);
+
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 sm:bottom-8 sm:right-8">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2.5 pb-[env(safe-area-inset-bottom)] sm:bottom-8 sm:right-8 sm:gap-3">
       <AnimatePresence>
         {showBubble && (
           <motion.div
@@ -43,7 +68,7 @@ export default function WhatsAppFloatingButton() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
-            className="relative max-w-[15.5rem] rounded-2xl rounded-br-sm border border-white/10 bg-ink-900/95 p-4 pr-8 text-sm text-white/85 shadow-2xl shadow-black/40 backdrop-blur"
+            className="relative w-[min(15.5rem,calc(100vw-2rem))] rounded-2xl rounded-br-sm border border-white/10 bg-ink-900/95 p-3.5 pr-8 text-sm text-white/85 shadow-2xl shadow-black/40 backdrop-blur sm:max-w-[15.5rem] sm:p-4"
           >
             <button
               onClick={() => setShowBubble(false)}
@@ -80,12 +105,12 @@ export default function WhatsAppFloatingButton() {
         transition={{ delay: 0.5, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="relative flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16"
+        className="relative flex h-13 w-13 items-center justify-center sm:h-16 sm:w-16"
       >
         <span className="absolute inset-0 rounded-full bg-[#25D366] blur-lg animate-soft-glow" />
         <span className="relative flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#2fe377] to-[#1da851] shadow-2xl shadow-black/40 ring-4 ring-white/10">
           <MessageCircle
-            className="h-6 w-6 text-ink-950 sm:h-7 sm:w-7"
+            className="h-5.5 w-5.5 text-ink-950 sm:h-7 sm:w-7"
             strokeWidth={2.3}
           />
         </span>

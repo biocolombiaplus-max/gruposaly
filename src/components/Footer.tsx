@@ -1,17 +1,51 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Logo from "./Logo";
-import { FacebookIcon, InstagramIcon } from "./SocialIcons";
-import { SERVICES, VENTAS_SERVICE, WHATSAPP_DISPLAY, whatsappLink } from "@/lib/services";
-import type { LogoSize } from "@/lib/siteSettingsTypes";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  TikTokIcon,
+  XIcon,
+  YouTubeIcon,
+} from "./SocialIcons";
+import {
+  DEFAULT_WHATSAPP_MESSAGE,
+  SERVICES,
+  VENTAS_SERVICE,
+  WHATSAPP_DISPLAY,
+  whatsappLink,
+} from "@/lib/services";
+import type { LogoSize, SocialLinks } from "@/lib/siteSettingsTypes";
 
 interface FooterProps {
   logoUrl?: string | null;
   logoSize?: LogoSize;
+  socialLinks?: SocialLinks;
 }
 
-export default function Footer({ logoUrl, logoSize }: FooterProps) {
+const SOCIAL_ICON_MAP = {
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  tiktok: TikTokIcon,
+  youtube: YouTubeIcon,
+  linkedin: LinkedInIcon,
+  twitter: XIcon,
+} as const;
+
+const SOCIAL_LABELS = {
+  facebook: "Facebook",
+  instagram: "Instagram",
+  tiktok: "TikTok",
+  youtube: "YouTube",
+  linkedin: "LinkedIn",
+  twitter: "X (Twitter)",
+} as const;
+
+export default function Footer({ logoUrl, logoSize, socialLinks = {} }: FooterProps) {
   const year = new Date().getFullYear();
+  const activeSocials = (Object.keys(SOCIAL_ICON_MAP) as (keyof typeof SOCIAL_ICON_MAP)[])
+    .filter((platform) => socialLinks[platform]);
 
   return (
     <footer id="contacto" className="border-t border-white/10 bg-ink-950">
@@ -25,29 +59,26 @@ export default function Footer({ logoUrl, logoSize }: FooterProps) {
               entregamos proyectos hospitalarios, residenciales, comerciales
               e industriales en toda Colombia.
             </p>
-            <div className="mt-6 flex gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-brand-500 hover:text-brand-400"
-              >
-                <FacebookIcon className="h-4.5 w-4.5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-brand-500 hover:text-brand-400"
-              >
-                <InstagramIcon className="h-4.5 w-4.5" />
-              </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {activeSocials.map((platform) => {
+                const Icon = SOCIAL_ICON_MAP[platform];
+                return (
+                  <a
+                    key={platform}
+                    href={socialLinks[platform]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={SOCIAL_LABELS[platform]}
+                    className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-400 hover:shadow-lg hover:shadow-brand-900/30"
+                  >
+                    <Icon className="h-4.5 w-4.5" />
+                  </a>
+                );
+              })}
               <a
                 href="mailto:contacto@gruposaly.com"
                 aria-label="Correo"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-brand-500 hover:text-brand-400"
+                className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-400 hover:shadow-lg hover:shadow-brand-900/30"
               >
                 <Mail className="h-4.5 w-4.5" />
               </a>
@@ -108,9 +139,7 @@ export default function Footer({ logoUrl, logoSize }: FooterProps) {
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 h-4.5 w-4.5 shrink-0 text-brand-400" />
                 <a
-                  href={whatsappLink(
-                    "Hola, quiero información sobre los servicios de Grupo Saly."
-                  )}
+                  href={whatsappLink(DEFAULT_WHATSAPP_MESSAGE)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-brand-400"
@@ -140,6 +169,9 @@ export default function Footer({ logoUrl, logoSize }: FooterProps) {
           <p>Construcción · Remodelación · Inmobiliaria</p>
         </div>
       </div>
+      {/* Reserves space so the fixed WhatsApp widget never sits on top of
+          this content when the page is scrolled all the way down. */}
+      <div className="h-24 sm:h-8" aria-hidden="true" />
     </footer>
   );
 }

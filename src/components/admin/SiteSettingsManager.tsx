@@ -1,17 +1,38 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Megaphone, Plus, Trash2 } from "lucide-react";
+import { Megaphone, Plus, Share2, Trash2 } from "lucide-react";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  TikTokIcon,
+  XIcon,
+  YouTubeIcon,
+} from "@/components/SocialIcons";
 import {
   LOGO_ALIGN_LABELS,
   LOGO_SIZE_LABELS,
+  SOCIAL_PLATFORMS,
+  SOCIAL_PLATFORM_LABELS,
+  SOCIAL_PLATFORM_PLACEHOLDERS,
   type LogoAlign,
   type LogoSize,
   type SiteSettings,
+  type SocialLinks,
 } from "@/lib/siteSettingsTypes";
 
 const SIZES: LogoSize[] = ["md", "lg", "xl"];
 const ALIGNS: LogoAlign[] = ["left", "center", "right"];
+
+const SOCIAL_ICON_MAP = {
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  tiktok: TikTokIcon,
+  youtube: YouTubeIcon,
+  linkedin: LinkedInIcon,
+  twitter: XIcon,
+} as const;
 
 export default function SiteSettingsManager({
   initialSettings,
@@ -22,6 +43,7 @@ export default function SiteSettingsManager({
   const [logoAlign, setLogoAlign] = useState(initialSettings.logoAlign);
   const [announcements, setAnnouncements] = useState(initialSettings.announcements);
   const [newAnnouncement, setNewAnnouncement] = useState("");
+  const [socialLinks, setSocialLinks] = useState<SocialLinks>(initialSettings.socialLinks);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -67,6 +89,14 @@ export default function SiteSettingsManager({
     const next = announcements.filter((_, i) => i !== index);
     setAnnouncements(next);
     save({ announcements: next });
+  }
+
+  function handleSocialChange(platform: keyof SocialLinks, value: string) {
+    setSocialLinks((prev) => ({ ...prev, [platform]: value }));
+  }
+
+  function handleSocialBlur() {
+    save({ socialLinks });
   }
 
   return (
@@ -181,6 +211,40 @@ export default function SiteSettingsManager({
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-ink-950/50 p-5">
+        <div className="flex items-center gap-2">
+          <Share2 className="h-4 w-4 text-brand-400" />
+          <h3 className="font-display text-sm font-bold">Redes Sociales</h3>
+        </div>
+        <p className="mt-1 text-xs text-white/45">
+          Pega el link de cada red social. Solo se muestran íconos en el pie
+          de página de las redes que llenes — deja el campo vacío para
+          ocultarlas.
+        </p>
+
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {SOCIAL_PLATFORMS.map((platform) => {
+            const Icon = SOCIAL_ICON_MAP[platform];
+            return (
+              <label key={platform} className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-white/45">
+                  <Icon className="h-3.5 w-3.5" />
+                  {SOCIAL_PLATFORM_LABELS[platform]}
+                </span>
+                <input
+                  type="url"
+                  value={socialLinks[platform] ?? ""}
+                  onChange={(e) => handleSocialChange(platform, e.target.value)}
+                  onBlur={handleSocialBlur}
+                  placeholder={SOCIAL_PLATFORM_PLACEHOLDERS[platform]}
+                  className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+                />
+              </label>
+            );
+          })}
+        </div>
       </div>
 
       {saving && <p className="text-xs text-white/40">Guardando...</p>}
