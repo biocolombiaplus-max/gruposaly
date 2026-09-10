@@ -46,7 +46,7 @@ export default function Logo({
         {showText && (
           <span
             className={clsx(
-              "mt-1.5 font-display font-black uppercase tracking-tight text-white",
+              "-mt-1 font-display font-black uppercase tracking-tight text-white",
               WORDMARK_SIZE_CLASSES[size],
               textClassName
             )}

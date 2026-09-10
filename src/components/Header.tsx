@@ -73,7 +73,7 @@ export default function Header({
         {logoAlign === "center" ? (
           <Link
             href="/"
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+            className="absolute left-1/2 top-[calc(50%+0.5rem)] -translate-x-1/2 -translate-y-1/2 text-white"
           >
             <Logo src={logoUrl} size={centerLogoSize} showText={logoShowWordmark} />
           </Link>
