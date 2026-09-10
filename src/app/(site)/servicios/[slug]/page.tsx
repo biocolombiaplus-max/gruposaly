@@ -5,6 +5,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import { SERVICES, getServiceBySlug } from "@/lib/services";
 import { SERVICE_ICON_MAP } from "@/lib/icons";
 import { getServiceImages } from "@/lib/serviceImages";
+import { getSiteImage } from "@/lib/siteImages";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Gallery from "@/components/Gallery";
 import FadeIn from "@/components/FadeIn";
@@ -35,7 +36,10 @@ export default async function ServicePage({
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
-  const images = await getServiceImages(service.slug);
+  const [images, ctaBackground] = await Promise.all([
+    getServiceImages(service.slug),
+    getSiteImage("cta"),
+  ]);
   const Icon = SERVICE_ICON_MAP[service.icon];
   const otherServices = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
 
@@ -179,7 +183,7 @@ export default async function ServicePage({
         </div>
       </section>
 
-      <FinalCTA />
+      <FinalCTA backgroundImage={ctaBackground} />
     </>
   );
 }

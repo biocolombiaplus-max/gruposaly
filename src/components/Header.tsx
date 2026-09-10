@@ -16,7 +16,7 @@ const NAV_LINKS = [
   { href: "/#contacto", label: "Contacto" },
 ];
 
-export default function Header() {
+export default function Header({ logoUrl }: { logoUrl?: string | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 sm:px-8">
         <Link href="/" className="text-white">
-          <Logo />
+          <Logo src={logoUrl} />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">

@@ -11,13 +11,15 @@ import FAQSection from "@/components/home/FAQSection";
 import FinalCTA from "@/components/home/FinalCTA";
 import { getAllServiceImages } from "@/lib/serviceImages";
 import { getAllProperties } from "@/lib/properties";
+import { getAllSiteImages } from "@/lib/siteImages";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [serviceImages, properties] = await Promise.all([
+  const [serviceImages, properties, siteImages] = await Promise.all([
     getAllServiceImages(),
     getAllProperties(),
+    getAllSiteImages(),
   ]);
 
   const ventasCover = properties.find((p) => p.images[0])?.images[0] ?? null;
@@ -29,7 +31,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero />
+      <Hero backgroundImage={siteImages.hero} />
       <TrustBar />
       <ServicesGrid
         serviceImages={serviceImages}
@@ -37,13 +39,13 @@ export default async function Home() {
         ventasCount={properties.length}
       />
       <StatsSection />
-      <AboutSection />
+      <AboutSection backgroundImage={siteImages.about} />
       <WorkShowcase images={workImages} />
       <FeaturedProperties properties={properties} />
       <ProcessSection />
       <Testimonials />
       <FAQSection />
-      <FinalCTA />
+      <FinalCTA backgroundImage={siteImages.cta} />
     </>
   );
 }

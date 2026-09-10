@@ -5,10 +5,22 @@ import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-export default function Hero() {
+interface HeroProps {
+  backgroundImage?: string | null;
+}
+
+export default function Hero({ backgroundImage }: HeroProps) {
   return (
     <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-ink-950 pt-24">
       <div className="absolute inset-0">
+        {backgroundImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={backgroundImage}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(251,125,22,0.16),transparent_45%),radial-gradient(circle_at_85%_75%,rgba(251,125,22,0.12),transparent_50%)]" />
         <div className="absolute inset-0 bg-noise opacity-[0.15]" />
         <div className="absolute -left-32 top-24 h-96 w-96 rounded-full bg-brand-600/25 blur-[110px] animate-float" />
@@ -16,7 +28,14 @@ export default function Hero() {
           className="absolute -right-24 bottom-10 h-[26rem] w-[26rem] rounded-full bg-brand-500/15 blur-[130px] animate-float"
           style={{ animationDelay: "1.5s" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/40" />
+        {backgroundImage ? (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/75 to-ink-950/30 lg:via-ink-950/55" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-ink-950/50" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/40" />
+        )}
       </div>
 
       <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-5 py-16 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:py-20">

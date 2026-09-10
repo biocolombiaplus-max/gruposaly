@@ -24,6 +24,10 @@ desplegarse en **Vercel**.
     la home y en `/proyectos`.
   - Pestaña **Fotos de Servicios**: subir/eliminar las fotos de cada
     servicio.
+  - Pestaña **Logo e Imágenes del Sitio**: subir el logo real (se usa en
+    el menú y el pie de página) y las fotos de fondo del Hero, de la
+    sección "Sobre Grupo Saly" y del CTA final — cada una es una imagen
+    única que se reemplaza al subir una nueva.
   - Cualquier foto subida (de cualquier tamaño o proporción) se
     redimensiona y convierte a WEBP automáticamente, se sube a **Vercel
     Blob**, y se muestra siempre recortada de forma uniforme

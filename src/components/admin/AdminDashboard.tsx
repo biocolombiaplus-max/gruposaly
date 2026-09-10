@@ -2,20 +2,24 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Images, LogOut, Building } from "lucide-react";
+import { Images, LogOut, Building, LayoutTemplate } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
+import SiteImagesManager from "./SiteImagesManager";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
-import type { Property } from "@/lib/properties";
+import type { Property } from "@/lib/propertyTypes";
+import type { SiteImagesMap } from "@/lib/siteImageTypes";
 
-type Tab = "servicios" | "inmuebles";
+type Tab = "servicios" | "inmuebles" | "sitio";
 
 export default function AdminDashboard({
   initialServiceImages,
   initialProperties,
+  initialSiteImages,
 }: {
   initialServiceImages: ServiceImagesMap;
   initialProperties: Property[];
+  initialSiteImages: SiteImagesMap;
 }) {
   const [tab, setTab] = useState<Tab>("inmuebles");
   const router = useRouter();
@@ -26,6 +30,12 @@ export default function AdminDashboard({
     router.refresh();
   }
 
+  const TABS: { id: Tab; label: string; icon: typeof Building }[] = [
+    { id: "inmuebles", label: "Inmuebles en Venta", icon: Building },
+    { id: "servicios", label: "Fotos de Servicios", icon: Images },
+    { id: "sitio", label: "Logo e Imágenes del Sitio", icon: LayoutTemplate },
+  ];
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -34,7 +44,8 @@ export default function AdminDashboard({
             Panel Administrativo
           </h1>
           <p className="mt-1 text-sm text-white/50">
-            Gestiona las fotos de cada servicio y publica inmuebles en venta.
+            Gestiona el logo, las imágenes del sitio, las fotos de cada
+            servicio y publica inmuebles en venta.
           </p>
         </div>
         <button
@@ -45,36 +56,32 @@ export default function AdminDashboard({
         </button>
       </div>
 
-      <div className="mt-8 flex gap-2 border-b border-white/10">
-        <button
-          onClick={() => setTab("inmuebles")}
-          className={
-            "inline-flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors " +
-            (tab === "inmuebles"
-              ? "border-brand-500 text-white"
-              : "border-transparent text-white/45 hover:text-white/70")
-          }
-        >
-          <Building className="h-4 w-4" /> Inmuebles en Venta
-        </button>
-        <button
-          onClick={() => setTab("servicios")}
-          className={
-            "inline-flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors " +
-            (tab === "servicios"
-              ? "border-brand-500 text-white"
-              : "border-transparent text-white/45 hover:text-white/70")
-          }
-        >
-          <Images className="h-4 w-4" /> Fotos de Servicios
-        </button>
+      <div className="mt-8 flex flex-wrap gap-2 border-b border-white/10">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={
+              "inline-flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors " +
+              (tab === t.id
+                ? "border-brand-500 text-white"
+                : "border-transparent text-white/45 hover:text-white/70")
+            }
+          >
+            <t.icon className="h-4 w-4" /> {t.label}
+          </button>
+        ))}
       </div>
 
       <div className="mt-8">
-        {tab === "inmuebles" ? (
+        {tab === "inmuebles" && (
           <PropertiesManager initialProperties={initialProperties} />
-        ) : (
+        )}
+        {tab === "servicios" && (
           <ServiceImagesManager initialImages={initialServiceImages} />
+        )}
+        {tab === "sitio" && (
+          <SiteImagesManager initialImages={initialSiteImages} />
         )}
       </div>
     </div>

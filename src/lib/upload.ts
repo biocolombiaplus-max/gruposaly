@@ -7,7 +7,7 @@ const MAX_HEIGHT = 1920;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024; // 15MB source cap
 
-export type UploadFolder = "services" | "properties";
+export type UploadFolder = "services" | "properties" | "site";
 
 export async function saveUploadedImage(
   file: File,

@@ -24,9 +24,25 @@ const POINTS = [
   },
 ];
 
-export default function AboutSection() {
+interface AboutSectionProps {
+  backgroundImage?: string | null;
+}
+
+export default function AboutSection({ backgroundImage }: AboutSectionProps) {
   return (
     <section id="nosotros" className="relative overflow-hidden bg-ink-900 py-24 sm:py-32">
+      {backgroundImage && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={backgroundImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-45"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-900 via-ink-900/55 to-ink-900/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink-900 via-transparent to-ink-900" />
+        </>
+      )}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(251,125,22,0.1),transparent_45%)]" />
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-16 px-5 sm:px-8 lg:grid-cols-2 lg:items-center">
         <FadeIn>

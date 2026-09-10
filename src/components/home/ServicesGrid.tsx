@@ -50,14 +50,15 @@ export default function ServicesGrid({
                         src={cover}
                         alt={service.title}
                         aspect="h-full"
-                        imgClassName="opacity-60 group-hover:scale-110 group-hover:opacity-70"
+                        imgClassName="group-hover:scale-110"
                       />
                     ) : (
                       <div
                         className={`h-full w-full bg-gradient-to-br ${service.heroGradient} opacity-25 transition-opacity duration-500 group-hover:opacity-35`}
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/75 to-ink-950/20" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/35 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-ink-950/60 via-transparent to-transparent" />
                   </div>
 
                   <div className="relative flex items-center justify-between p-6">

@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import { FacebookIcon, InstagramIcon } from "./SocialIcons";
 import { SERVICES, VENTAS_SERVICE, WHATSAPP_DISPLAY, whatsappLink } from "@/lib/services";
 
-export default function Footer() {
+export default function Footer({ logoUrl }: { logoUrl?: string | null }) {
   const year = new Date().getFullYear();
 
   return (
@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <Logo textClassName="text-white" />
+            <Logo src={logoUrl} textClassName="text-white" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
               Construcción, remodelación e inmobiliaria con estándares de las
               constructoras más grandes del mundo. Diseñamos, construimos y

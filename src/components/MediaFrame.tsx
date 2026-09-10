@@ -8,6 +8,7 @@ interface MediaFrameProps {
   className?: string;
   imgClassName?: string;
   priority?: boolean;
+  objectFit?: "cover" | "contain";
 }
 
 export default function MediaFrame({
@@ -17,6 +18,7 @@ export default function MediaFrame({
   className,
   imgClassName,
   priority,
+  objectFit = "cover",
 }: MediaFrameProps) {
   return (
     <div className={clsx("media-frame", aspect, className)}>
@@ -27,7 +29,8 @@ export default function MediaFrame({
           alt={alt}
           loading={priority ? "eager" : "lazy"}
           className={clsx(
-            "h-full w-full object-cover transition-transform duration-700",
+            "h-full w-full transition-transform duration-700",
+            objectFit === "contain" ? "object-contain" : "object-cover",
             imgClassName
           )}
         />

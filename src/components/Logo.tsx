@@ -1,6 +1,7 @@
 import clsx from "clsx";
 
 interface LogoProps {
+  src?: string | null;
   className?: string;
   markClassName?: string;
   showText?: boolean;
@@ -8,11 +9,25 @@ interface LogoProps {
 }
 
 export default function Logo({
+  src,
   className,
   markClassName,
   showText = true,
   textClassName,
 }: LogoProps) {
+  if (src) {
+    return (
+      <span className={clsx("inline-flex items-center", className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt="Grupo Saly"
+          className={clsx("h-9 w-auto object-contain sm:h-11", markClassName)}
+        />
+      </span>
+    );
+  }
+
   return (
     <span className={clsx("inline-flex items-center gap-2.5", className)}>
       <svg

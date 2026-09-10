@@ -2,9 +2,25 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import FadeIn from "@/components/FadeIn";
 import { WHATSAPP_DISPLAY } from "@/lib/services";
 
-export default function FinalCTA() {
+interface FinalCTAProps {
+  backgroundImage?: string | null;
+}
+
+export default function FinalCTA({ backgroundImage }: FinalCTAProps) {
   return (
     <section className="relative overflow-hidden bg-ink-950 py-24 sm:py-32">
+      {backgroundImage && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={backgroundImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-50"
+          />
+          <div className="absolute inset-0 bg-ink-950/55" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/40" />
+        </>
+      )}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(251,125,22,0.18),transparent_55%)]" />
       <div className="absolute inset-0 bg-noise opacity-10" />
       <FadeIn className="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
