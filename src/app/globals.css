@@ -25,9 +25,10 @@
     "Helvetica Neue", Arial, sans-serif;
 
   --animate-fade-up: fade-up 0.7s ease-out both;
-  --animate-pulse-glow: pulse-glow 2.4s ease-in-out infinite;
   --animate-float: float 5s ease-in-out infinite;
   --animate-marquee: marquee 28s linear infinite;
+  --animate-soft-glow: soft-glow 2.6s ease-in-out infinite;
+  --animate-bubble-in: bubble-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
   @keyframes fade-up {
     from {
@@ -39,13 +40,25 @@
       transform: translateY(0);
     }
   }
-  @keyframes pulse-glow {
+  @keyframes soft-glow {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.55);
+      opacity: 0.35;
+      transform: scale(0.92);
     }
     50% {
-      box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+      opacity: 0.7;
+      transform: scale(1.12);
+    }
+  }
+  @keyframes bubble-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.92);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   }
   @keyframes float {

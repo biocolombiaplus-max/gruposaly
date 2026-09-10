@@ -79,7 +79,27 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.45 }}
-            className="mt-10 flex items-center gap-2 text-xs text-white/45"
+            className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-6"
+          >
+            {[
+              ["12+", "Años de experiencia"],
+              ["120+", "Proyectos entregados"],
+              ["45.000+", "m² construidos"],
+            ].map(([value, label]) => (
+              <div key={label}>
+                <span className="font-display text-lg font-black text-brand-400">
+                  {value}
+                </span>
+                <span className="ml-1.5 text-xs text-white/50">{label}</span>
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
+            className="mt-5 flex items-center gap-2 text-xs text-white/45"
           >
             <ShieldCheck className="h-4 w-4 text-brand-400" />
             Obras entregadas con garantía y cumplimiento normativo NSR-10

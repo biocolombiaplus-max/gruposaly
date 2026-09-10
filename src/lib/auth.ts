@@ -42,7 +42,7 @@ export async function getIsAdminAuthenticated() {
 }
 
 export function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD || "gruposaly2024";
+  return process.env.ADMIN_PASSWORD || "123456";
 }
 
 export const SESSION_COOKIE_MAX_AGE = SESSION_MAX_AGE_SECONDS;
