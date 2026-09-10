@@ -21,6 +21,7 @@ import type { LogoSize, SocialLinks } from "@/lib/siteSettingsTypes";
 interface FooterProps {
   logoUrl?: string | null;
   logoSize?: LogoSize;
+  logoShowWordmark?: boolean;
   socialLinks?: SocialLinks;
 }
 
@@ -42,7 +43,12 @@ const SOCIAL_LABELS = {
   twitter: "X (Twitter)",
 } as const;
 
-export default function Footer({ logoUrl, logoSize, socialLinks = {} }: FooterProps) {
+export default function Footer({
+  logoUrl,
+  logoSize,
+  logoShowWordmark,
+  socialLinks = {},
+}: FooterProps) {
   const year = new Date().getFullYear();
   const activeSocials = (Object.keys(SOCIAL_ICON_MAP) as (keyof typeof SOCIAL_ICON_MAP)[])
     .filter((platform) => socialLinks[platform]);
@@ -52,7 +58,12 @@ export default function Footer({ logoUrl, logoSize, socialLinks = {} }: FooterPr
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <Logo src={logoUrl} size={logoSize} textClassName="text-white" />
+            <Logo
+              src={logoUrl}
+              size={logoSize}
+              showText={logoShowWordmark}
+              textClassName="text-white"
+            />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
               Construcción, remodelación e inmobiliaria con estándares de las
               constructoras más grandes del mundo. Diseñamos, construimos y

@@ -14,6 +14,7 @@ export type SocialLinks = Partial<Record<SocialPlatform, string>>;
 export interface SiteSettings {
   logoSize: LogoSize;
   logoAlign: LogoAlign;
+  logoShowWordmark: boolean;
   announcements: string[];
   socialLinks: SocialLinks;
 }
@@ -29,6 +30,7 @@ export const DEFAULT_ANNOUNCEMENTS: string[] = [
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   logoSize: "lg",
   logoAlign: "left",
+  logoShowWordmark: false,
   announcements: DEFAULT_ANNOUNCEMENTS,
   socialLinks: {},
 };

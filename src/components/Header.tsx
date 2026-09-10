@@ -21,9 +21,15 @@ interface HeaderProps {
   logoUrl?: string | null;
   logoSize?: LogoSize;
   logoAlign?: LogoAlign;
+  logoShowWordmark?: boolean;
 }
 
-export default function Header({ logoUrl, logoSize, logoAlign = "left" }: HeaderProps) {
+export default function Header({
+  logoUrl,
+  logoSize,
+  logoAlign = "left",
+  logoShowWordmark,
+}: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -69,14 +75,14 @@ export default function Header({ logoUrl, logoSize, logoAlign = "left" }: Header
             href="/"
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
           >
-            <Logo src={logoUrl} size={centerLogoSize} />
+            <Logo src={logoUrl} size={centerLogoSize} showText={logoShowWordmark} />
           </Link>
         ) : (
           <Link
             href="/"
             className={clsx("text-white", logoAlign === "right" && "order-2")}
           >
-            <Logo src={logoUrl} size={logoSize} />
+            <Logo src={logoUrl} size={logoSize} showText={logoShowWordmark} />
           </Link>
         )}
 

@@ -39,6 +39,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return {
     logoSize: (data.logoSize as LogoSize) || DEFAULT_SITE_SETTINGS.logoSize,
     logoAlign: (data.logoAlign as LogoAlign) || DEFAULT_SITE_SETTINGS.logoAlign,
+    logoShowWordmark:
+      typeof data.logoShowWordmark === "boolean"
+        ? data.logoShowWordmark
+        : DEFAULT_SITE_SETTINGS.logoShowWordmark,
     announcements: Array.isArray(data.announcements)
       ? data.announcements.filter((a: unknown) => typeof a === "string")
       : DEFAULT_SITE_SETTINGS.announcements,

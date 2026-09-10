@@ -16,11 +16,17 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
   return (
     <>
       <AnnouncementBar messages={settings.announcements} />
-      <Header logoUrl={logoUrl} logoSize={settings.logoSize} logoAlign={settings.logoAlign} />
+      <Header
+        logoUrl={logoUrl}
+        logoSize={settings.logoSize}
+        logoAlign={settings.logoAlign}
+        logoShowWordmark={settings.logoShowWordmark}
+      />
       <main className="flex-1">{children}</main>
       <Footer
         logoUrl={logoUrl}
         logoSize={settings.logoSize}
+        logoShowWordmark={settings.logoShowWordmark}
         socialLinks={settings.socialLinks}
       />
       <WhatsAppFloatingButton />

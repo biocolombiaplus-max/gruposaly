@@ -48,6 +48,13 @@ export async function PUT(request: NextRequest) {
     update.logoAlign = body.logoAlign;
   }
 
+  if (body.logoShowWordmark !== undefined) {
+    if (typeof body.logoShowWordmark !== "boolean") {
+      return NextResponse.json({ error: "Valor de texto de logo inválido." }, { status: 400 });
+    }
+    update.logoShowWordmark = body.logoShowWordmark;
+  }
+
   if (body.announcements !== undefined) {
     if (!Array.isArray(body.announcements)) {
       return NextResponse.json({ error: "Lista de anuncios inválida." }, { status: 400 });

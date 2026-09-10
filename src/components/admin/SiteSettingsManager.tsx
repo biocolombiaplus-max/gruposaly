@@ -41,6 +41,9 @@ export default function SiteSettingsManager({
 }) {
   const [logoSize, setLogoSize] = useState(initialSettings.logoSize);
   const [logoAlign, setLogoAlign] = useState(initialSettings.logoAlign);
+  const [logoShowWordmark, setLogoShowWordmark] = useState(
+    initialSettings.logoShowWordmark
+  );
   const [announcements, setAnnouncements] = useState(initialSettings.announcements);
   const [newAnnouncement, setNewAnnouncement] = useState("");
   const [socialLinks, setSocialLinks] = useState<SocialLinks>(initialSettings.socialLinks);
@@ -73,6 +76,11 @@ export default function SiteSettingsManager({
   function handleAlignChange(align: LogoAlign) {
     setLogoAlign(align);
     save({ logoAlign: align });
+  }
+
+  function handleShowWordmarkChange(value: boolean) {
+    setLogoShowWordmark(value);
+    save({ logoShowWordmark: value });
   }
 
   function handleAddAnnouncement(e: FormEvent) {
@@ -154,6 +162,28 @@ export default function SiteSettingsManager({
             </div>
           </div>
         </div>
+
+        <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-ink-900/40 p-4">
+          <input
+            type="checkbox"
+            checked={logoShowWordmark}
+            onChange={(e) => handleShowWordmarkChange(e.target.checked)}
+            className="mt-0.5 h-4.5 w-4.5 shrink-0 accent-brand-500"
+          />
+          <span>
+            <span className="block text-sm font-semibold text-white">
+              Mostrar &quot;Grupo Saly&quot; en texto blanco junto al logo
+            </span>
+            <span className="mt-1 block text-xs text-white/50">
+              Actívalo si tu archivo de logo es solo el ícono/símbolo (sin
+              texto). Si tu imagen ya trae el nombre escrito dentro de la
+              foto, ese texto no se puede recolorear desde aquí — el color
+              queda fijo en el archivo. Para un texto perfectamente blanco y
+              nítido, sube una versión del logo que sea solo el símbolo, sin
+              letras, y activa esta opción.
+            </span>
+          </span>
+        </label>
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-ink-950/50 p-5">
