@@ -28,6 +28,12 @@ export const metadata: Metadata = {
     locale: "es_CO",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Grupo Saly | Construcción, Remodelación e Inmobiliaria",
+    description:
+      "Construcción y remodelación de infraestructura hospitalaria, casas, edificios, locales y bodegas. Proyectos de vivienda en venta.",
+  },
 };
 
 export const viewport: Viewport = {
