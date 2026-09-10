@@ -60,7 +60,7 @@ export default async function PropertyPage({
     .slice(0, 3);
 
   return (
-    <div className="bg-ink-950 pt-28 pb-24 sm:pt-32">
+    <div className="bg-ink-950 pt-[9.25rem] pb-24 sm:pt-[10.25rem]">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-white/45">
           <Link href="/" className="hover:text-brand-400">

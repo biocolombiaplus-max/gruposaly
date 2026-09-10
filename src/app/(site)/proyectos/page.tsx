@@ -16,7 +16,7 @@ export default async function ProyectosPage() {
   const properties = await getAllProperties();
 
   return (
-    <div className="bg-ink-950 pt-32 pb-24 sm:pt-40">
+    <div className="bg-ink-950 pt-[10.25rem] pb-24 sm:pt-[12.25rem]">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">

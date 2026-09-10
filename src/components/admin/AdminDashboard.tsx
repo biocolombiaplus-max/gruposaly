@@ -6,9 +6,11 @@ import { Images, LogOut, Building, LayoutTemplate } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
 import SiteImagesManager from "./SiteImagesManager";
+import SiteSettingsManager from "./SiteSettingsManager";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
+import type { SiteSettings } from "@/lib/siteSettingsTypes";
 
 type Tab = "servicios" | "inmuebles" | "sitio";
 
@@ -16,10 +18,12 @@ export default function AdminDashboard({
   initialServiceImages,
   initialProperties,
   initialSiteImages,
+  initialSiteSettings,
 }: {
   initialServiceImages: ServiceImagesMap;
   initialProperties: Property[];
   initialSiteImages: SiteImagesMap;
+  initialSiteSettings: SiteSettings;
 }) {
   const [tab, setTab] = useState<Tab>("inmuebles");
   const router = useRouter();
@@ -33,7 +37,7 @@ export default function AdminDashboard({
   const TABS: { id: Tab; label: string; icon: typeof Building }[] = [
     { id: "inmuebles", label: "Inmuebles en Venta", icon: Building },
     { id: "servicios", label: "Fotos de Servicios", icon: Images },
-    { id: "sitio", label: "Logo e Imágenes del Sitio", icon: LayoutTemplate },
+    { id: "sitio", label: "Logo, Imágenes y Anuncios", icon: LayoutTemplate },
   ];
 
   return (
@@ -81,7 +85,10 @@ export default function AdminDashboard({
           <ServiceImagesManager initialImages={initialServiceImages} />
         )}
         {tab === "sitio" && (
-          <SiteImagesManager initialImages={initialSiteImages} />
+          <div className="space-y-10">
+            <SiteSettingsManager initialSettings={initialSiteSettings} />
+            <SiteImagesManager initialImages={initialSiteImages} />
+          </div>
         )}
       </div>
     </div>

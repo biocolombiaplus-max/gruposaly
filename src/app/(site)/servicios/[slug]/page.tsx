@@ -45,7 +45,7 @@ export default async function ServicePage({
 
   return (
     <>
-      <section className="relative overflow-hidden bg-ink-950 pt-32 pb-20 sm:pt-40 sm:pb-28">
+      <section className="relative overflow-hidden bg-ink-950 pt-[10.25rem] pb-20 sm:pt-[12.25rem] sm:pb-28">
         <div
           className={`absolute inset-0 bg-gradient-to-br ${service.heroGradient} opacity-[0.14]`}
         />

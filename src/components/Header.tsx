@@ -8,6 +8,7 @@ import clsx from "clsx";
 import Logo from "./Logo";
 import WhatsAppButton from "./WhatsAppButton";
 import { SERVICES, VENTAS_SERVICE } from "@/lib/services";
+import type { LogoAlign, LogoSize } from "@/lib/siteSettingsTypes";
 
 const NAV_LINKS = [
   { href: "/#nosotros", label: "Nosotros" },
@@ -16,7 +17,13 @@ const NAV_LINKS = [
   { href: "/#contacto", label: "Contacto" },
 ];
 
-export default function Header({ logoUrl }: { logoUrl?: string | null }) {
+interface HeaderProps {
+  logoUrl?: string | null;
+  logoSize?: LogoSize;
+  logoAlign?: LogoAlign;
+}
+
+export default function Header({ logoUrl, logoSize, logoAlign = "left" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -39,18 +46,41 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
   return (
     <header
       className={clsx(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+        "fixed inset-x-0 top-9 z-40 transition-all duration-300",
         scrolled || mobileOpen
           ? "bg-ink-950/90 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/20"
           : "bg-gradient-to-b from-ink-950/70 to-transparent"
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 sm:px-8">
-        <Link href="/" className="text-white">
-          <Logo src={logoUrl} />
-        </Link>
+      <div className="relative mx-auto flex max-w-7xl items-center px-5 py-3.5 sm:px-8">
+        {logoAlign === "center" ? (
+          <Link
+            href="/"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+          >
+            <Logo src={logoUrl} size={logoSize} />
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            className={clsx("text-white", logoAlign === "right" && "order-2")}
+          >
+            <Logo src={logoUrl} size={logoSize} />
+          </Link>
+        )}
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <div
+          className={clsx(
+            "flex flex-1 items-center gap-1",
+            logoAlign === "right" ? "order-1 mr-auto justify-start" : "ml-auto justify-end"
+          )}
+        >
+        <nav
+          className={clsx(
+            "items-center gap-1",
+            logoAlign === "center" ? "hidden" : "hidden lg:flex"
+          )}
+        >
           <div
             className="relative"
             onMouseEnter={() => setServicesOpen(true)}
@@ -108,7 +138,7 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className={clsx(logoAlign === "center" ? "hidden" : "hidden lg:block")}>
           <WhatsAppButton
             message="Hola, quiero información sobre los servicios de Grupo Saly."
             label="Cotizar Ahora"
@@ -116,7 +146,10 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
         </div>
 
         <button
-          className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-ink-950 shadow-lg shadow-brand-900/50 transition-transform active:scale-90 lg:hidden"
+          className={clsx(
+            "relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-ink-950 shadow-lg shadow-brand-900/50 transition-transform active:scale-90",
+            logoAlign !== "center" && "lg:hidden"
+          )}
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={mobileOpen}
@@ -132,11 +165,13 @@ export default function Header({ logoUrl }: { logoUrl?: string | null }) {
             )}
           </span>
         </button>
+        </div>
       </div>
 
       <div
         className={clsx(
-          "overflow-hidden border-t border-white/10 bg-ink-950/97 backdrop-blur-md transition-all duration-300 lg:hidden",
+          "overflow-hidden border-t border-white/10 bg-ink-950/97 backdrop-blur-md transition-all duration-300",
+          logoAlign !== "center" && "lg:hidden",
           mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         )}
       >

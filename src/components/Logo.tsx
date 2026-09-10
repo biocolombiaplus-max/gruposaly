@@ -1,15 +1,24 @@
 import clsx from "clsx";
+import type { LogoSize } from "@/lib/siteSettingsTypes";
 
 interface LogoProps {
   src?: string | null;
+  size?: LogoSize;
   className?: string;
   markClassName?: string;
   showText?: boolean;
   textClassName?: string;
 }
 
+const SIZE_CLASSES: Record<LogoSize, string> = {
+  md: "h-14 w-auto object-contain sm:h-16",
+  lg: "h-20 w-auto object-contain sm:h-24",
+  xl: "h-24 w-auto object-contain sm:h-32",
+};
+
 export default function Logo({
   src,
+  size = "lg",
   className,
   markClassName,
   showText = true,
@@ -22,7 +31,7 @@ export default function Logo({
         <img
           src={src}
           alt="Grupo Saly"
-          className={clsx("h-20 w-auto object-contain sm:h-24", markClassName)}
+          className={clsx(SIZE_CLASSES[size], markClassName)}
         />
       </span>
     );
