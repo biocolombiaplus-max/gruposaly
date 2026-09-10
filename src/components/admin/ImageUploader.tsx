@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Loader2, UploadCloud } from "lucide-react";
 import type { UploadFolder } from "@/lib/upload";
+import { shrinkImageForUpload } from "@/lib/clientImageResize";
 
 interface ImageUploaderProps {
   folder: UploadFolder;
@@ -32,13 +33,19 @@ export default function ImageUploader({
     setProgress({ done: 0, total: list.length });
 
     for (let i = 0; i < list.length; i++) {
-      const formData = new FormData();
-      formData.append("file", list[i]);
-      formData.append("folder", folder);
       try {
+        const toUpload = await shrinkImageForUpload(list[i]);
+        const formData = new FormData();
+        formData.append("file", toUpload);
+        formData.append("folder", folder);
+
         const res = await fetch("/api/upload", { method: "POST", body: formData });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error al subir la imagen.");
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(
+            data.error || `Error al subir la imagen (código ${res.status}).`
+          );
+        }
         onUploaded(data.url as string);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error al subir la imagen.");
