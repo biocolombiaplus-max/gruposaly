@@ -4,14 +4,60 @@ import { getIsAdminAuthenticated } from "@/lib/auth";
 import {
   createProperty,
   getAllProperties,
+  type NewProjectDetails,
+  type NewProjectStage,
   type PropertyStatus,
   type PropertyType,
 } from "@/lib/properties";
 
 export const dynamic = "force-dynamic";
 
-const VALID_TYPES: PropertyType[] = ["casa", "edificio", "local", "bodega"];
+const VALID_TYPES: PropertyType[] = [
+  "casa",
+  "edificio",
+  "local",
+  "bodega",
+  "proyecto_nuevo",
+];
 const VALID_STATUSES: PropertyStatus[] = ["disponible", "reservado", "vendido"];
+const VALID_STAGES: NewProjectStage[] = [
+  "planos",
+  "construccion",
+  "entrega_inmediata",
+];
+
+function parseNewProject(body: Record<string, unknown>): NewProjectDetails | undefined {
+  if (body.type !== "proyecto_nuevo" || typeof body.newProject !== "object" || !body.newProject) {
+    return undefined;
+  }
+  const raw = body.newProject as Record<string, unknown>;
+  const details: NewProjectDetails = {};
+
+  const separationAmount = Number(raw.separationAmount);
+  if (Number.isFinite(separationAmount) && raw.separationAmount !== "") {
+    details.separationAmount = separationAmount;
+  }
+  if (typeof raw.separationLabel === "string" && raw.separationLabel.trim()) {
+    details.separationLabel = raw.separationLabel.trim();
+  }
+  if (typeof raw.paymentPlan === "string" && raw.paymentPlan.trim()) {
+    details.paymentPlan = raw.paymentPlan.trim();
+  }
+  if (typeof raw.deliveryDate === "string" && raw.deliveryDate.trim()) {
+    details.deliveryDate = raw.deliveryDate.trim();
+  }
+  if (VALID_STAGES.includes(raw.stage as NewProjectStage)) {
+    details.stage = raw.stage as NewProjectStage;
+  }
+  if (typeof raw.financingAvailable === "boolean") {
+    details.financingAvailable = raw.financingAvailable;
+  }
+  if (typeof raw.additionalConditions === "string" && raw.additionalConditions.trim()) {
+    details.additionalConditions = raw.additionalConditions.trim();
+  }
+
+  return Object.keys(details).length > 0 ? details : undefined;
+}
 
 export async function GET() {
   const properties = await getAllProperties();
@@ -63,6 +109,7 @@ export async function POST(request: NextRequest) {
       description: typeof body.description === "string" ? body.description : "",
       features,
       images,
+      newProject: parseNewProject(body),
     });
     return NextResponse.json({ property }, { status: 201 });
   } catch (error) {

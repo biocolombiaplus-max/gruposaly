@@ -5,14 +5,22 @@ import { headers } from "next/headers";
 import {
   BedDouble,
   Bath,
+  Calendar,
   Car,
   CheckCircle2,
+  CreditCard,
+  Landmark,
   MapPin,
   Ruler,
 } from "lucide-react";
 import { getAllProperties, getPropertyBySlug } from "@/lib/properties";
-import { PROPERTY_STATUS_LABELS, PROPERTY_TYPE_LABELS } from "@/lib/properties";
+import {
+  NEW_PROJECT_STAGE_LABELS,
+  PROPERTY_STATUS_LABELS,
+  PROPERTY_TYPE_LABELS,
+} from "@/lib/properties";
 import { formatCOP } from "@/lib/format";
+import { whatsappLink } from "@/lib/services";
 import Gallery from "@/components/Gallery";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import CopyLinkButton from "@/components/CopyLinkButton";
@@ -54,6 +62,8 @@ export default async function PropertyPage({
   const origin = host ? `${protocol}://${host}` : "";
   const path = `/proyectos/${property.slug}`;
   const message = `Hola, estoy interesado en el inmueble "${property.title}" (${PROPERTY_TYPE_LABELS[property.type]} - ${property.location}). ${origin}${path}`;
+  const creditMessage = `Hola, quiero información sobre crédito directo para el inmueble "${property.title}" (${property.location}). ¿Me ayudan a analizar mi caso y hacer la consulta para crear el crédito? ${origin}${path}`;
+  const newProject = property.newProject;
 
   const related = allProperties
     .filter((p) => p.id !== property.id && p.type === property.type)
@@ -133,6 +143,80 @@ export default async function PropertyPage({
                 </ul>
               </FadeIn>
             )}
+
+            {newProject && (
+              <FadeIn delay={0.2} className="mt-10">
+                <h2 className="font-display text-xl font-bold">
+                  Condiciones del Proyecto
+                </h2>
+                <div className="mt-4 grid grid-cols-1 gap-4 rounded-2xl border border-brand-500/20 bg-brand-500/5 p-6 sm:grid-cols-2">
+                  {(newProject.separationLabel ||
+                    typeof newProject.separationAmount === "number") && (
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Separación
+                      </p>
+                      <p className="mt-1 font-display text-lg font-bold text-emerald-400">
+                        {newProject.separationLabel ||
+                          formatCOP(newProject.separationAmount!)}
+                      </p>
+                    </div>
+                  )}
+                  {newProject.stage && (
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Etapa del proyecto
+                      </p>
+                      <p className="mt-1 font-semibold text-white/85">
+                        {NEW_PROJECT_STAGE_LABELS[newProject.stage]}
+                      </p>
+                    </div>
+                  )}
+                  {newProject.deliveryDate && (
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Entrega estimada
+                      </p>
+                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-white/85">
+                        <Calendar className="h-4 w-4 text-brand-400" />
+                        {newProject.deliveryDate}
+                      </p>
+                    </div>
+                  )}
+                  {newProject.financingAvailable && (
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Financiación
+                      </p>
+                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-white/85">
+                        <Landmark className="h-4 w-4 text-brand-400" />
+                        Te ayudamos con el crédito hipotecario
+                      </p>
+                    </div>
+                  )}
+                  {newProject.paymentPlan && (
+                    <div className="sm:col-span-2">
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Forma de pago
+                      </p>
+                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-white/75">
+                        {newProject.paymentPlan}
+                      </p>
+                    </div>
+                  )}
+                  {newProject.additionalConditions && (
+                    <div className="sm:col-span-2">
+                      <p className="text-xs uppercase tracking-widest text-white/40">
+                        Condiciones adicionales
+                      </p>
+                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-white/75">
+                        {newProject.additionalConditions}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </FadeIn>
+            )}
           </div>
 
           <FadeIn delay={0.1}>
@@ -143,6 +227,14 @@ export default async function PropertyPage({
               <p className="mt-2 font-display text-3xl font-black text-brand-400">
                 {property.priceLabel || formatCOP(property.price)}
               </p>
+              {(newProject?.separationLabel ||
+                typeof newProject?.separationAmount === "number") && (
+                <p className="mt-1.5 text-sm font-semibold text-emerald-400">
+                  Separa desde{" "}
+                  {newProject.separationLabel ||
+                    formatCOP(newProject.separationAmount!)}
+                </p>
+              )}
 
               <div className="mt-6 grid grid-cols-2 gap-3 border-y border-white/10 py-5">
                 {typeof property.areaM2 === "number" && (
@@ -178,7 +270,23 @@ export default async function PropertyPage({
                   className="w-full"
                   size="lg"
                 />
+                <a
+                  href={whatsappLink(creditMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-6 py-3 text-sm font-bold text-brand-300 transition-colors hover:bg-brand-500/20"
+                >
+                  <CreditCard className="h-4.5 w-4.5" />
+                  Crédito Directo
+                </a>
                 <CopyLinkButton path={path} className="w-full" />
+              </div>
+
+              <div className="mt-5 flex items-start gap-2.5 rounded-2xl border border-white/10 bg-ink-950/60 p-4 text-xs leading-relaxed text-white/55">
+                <Landmark className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
+                Analizamos tu caso, hacemos la consulta y te acompañamos en
+                todo el trámite para que consigas tu crédito — sin costo por
+                la asesoría.
               </div>
             </div>
           </FadeIn>

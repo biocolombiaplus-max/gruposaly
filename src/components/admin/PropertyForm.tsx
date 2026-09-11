@@ -5,8 +5,10 @@ import { Trash2, X } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 import MediaFrame from "@/components/MediaFrame";
 import {
+  NEW_PROJECT_STAGE_LABELS,
   PROPERTY_STATUS_LABELS,
   PROPERTY_TYPE_LABELS,
+  type NewProjectStage,
   type Property,
   type PropertyStatus,
   type PropertyType,
@@ -36,8 +38,9 @@ interface PropertyFormProps {
   onCancel: () => void;
 }
 
-const TYPES: PropertyType[] = ["casa", "edificio", "local", "bodega"];
+const TYPES: PropertyType[] = ["casa", "edificio", "local", "bodega", "proyecto_nuevo"];
 const STATUSES: PropertyStatus[] = ["disponible", "reservado", "vendido"];
+const STAGES: NewProjectStage[] = ["planos", "construccion", "entrega_inmediata"];
 
 export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFormProps) {
   const [title, setTitle] = useState(initial?.title ?? "");
@@ -58,11 +61,31 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
     (initial?.features ?? []).join("\n")
   );
   const [images, setImages] = useState<string[]>(initial?.images ?? []);
+  const [separationAmount, setSeparationAmount] = useState(
+    initial?.newProject?.separationAmount?.toString() ?? ""
+  );
+  const [separationLabel, setSeparationLabel] = useState(
+    initial?.newProject?.separationLabel ?? ""
+  );
+  const [paymentPlan, setPaymentPlan] = useState(initial?.newProject?.paymentPlan ?? "");
+  const [deliveryDate, setDeliveryDate] = useState(
+    initial?.newProject?.deliveryDate ?? ""
+  );
+  const [stage, setStage] = useState<NewProjectStage | "">(
+    initial?.newProject?.stage ?? ""
+  );
+  const [financingAvailable, setFinancingAvailable] = useState(
+    initial?.newProject?.financingAvailable ?? false
+  );
+  const [additionalConditions, setAdditionalConditions] = useState(
+    initial?.newProject?.additionalConditions ?? ""
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const isEdit = Boolean(initial);
   const showResidentialFields = type === "casa" || type === "edificio";
+  const isNewProject = type === "proyecto_nuevo";
   const citiesForDept =
     COLOMBIA_DEPARTMENTS.find((d) => d.name === departamento)?.cities ?? [];
   const resolvedCity = ciudad === OTHER_CITY_OPTION ? ciudadManual.trim() : ciudad;
@@ -94,6 +117,17 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
         .map((f) => f.trim())
         .filter(Boolean),
       images,
+      newProject: isNewProject
+        ? {
+            separationAmount: separationAmount === "" ? "" : Number(separationAmount),
+            separationLabel: separationLabel || undefined,
+            paymentPlan: paymentPlan || undefined,
+            deliveryDate: deliveryDate || undefined,
+            stage: stage || undefined,
+            financingAvailable,
+            additionalConditions: additionalConditions || undefined,
+          }
+        : undefined,
     };
 
     try {
@@ -348,6 +382,117 @@ export default function PropertyForm({ initial, onSaved, onCancel }: PropertyFor
           />
         </div>
       </div>
+
+      {isNewProject && (
+        <div className="rounded-2xl border border-brand-500/25 bg-brand-500/5 p-5">
+          <h4 className="font-display text-sm font-bold text-brand-300">
+            Condiciones del Proyecto Nuevo
+          </h4>
+          <p className="mt-1 text-xs text-white/45">
+            Información que ven los interesados en proyectos sobre planos o
+            en construcción: cuánto se separa, forma de pago y fecha de
+            entrega — igual a como lo manejan las grandes constructoras.
+          </p>
+
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Monto de separación (COP)
+              </label>
+              <input
+                type="number"
+                min={0}
+                value={separationAmount}
+                onChange={(e) => setSeparationAmount(e.target.value)}
+                placeholder="5000000"
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Texto de separación (opcional)
+              </label>
+              <input
+                value={separationLabel}
+                onChange={(e) => setSeparationLabel(e.target.value)}
+                placeholder="$5.000.000 o el 10% del inmueble"
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              />
+              <p className="mt-1.5 text-xs text-white/35">
+                Se muestra como &quot;Separa desde {separationLabel || "..."}&quot;
+                — no repitas &quot;Desde&quot;.
+              </p>
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Etapa del proyecto
+              </label>
+              <select
+                value={stage}
+                onChange={(e) => setStage(e.target.value as NewProjectStage | "")}
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              >
+                <option value="">Sin definir</option>
+                {STAGES.map((s) => (
+                  <option key={s} value={s}>
+                    {NEW_PROJECT_STAGE_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Fecha estimada de entrega
+              </label>
+              <input
+                value={deliveryDate}
+                onChange={(e) => setDeliveryDate(e.target.value)}
+                placeholder="Diciembre 2026"
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Forma de pago
+              </label>
+              <textarea
+                value={paymentPlan}
+                onChange={(e) => setPaymentPlan(e.target.value)}
+                rows={3}
+                placeholder={"Cuota inicial 30% financiada a 24 meses\nSaldo 70% contra entrega con crédito hipotecario"}
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              />
+            </div>
+
+            <label className="flex cursor-pointer items-center gap-2.5 sm:col-span-2">
+              <input
+                type="checkbox"
+                checked={financingAvailable}
+                onChange={(e) => setFinancingAvailable(e.target.checked)}
+                className="h-4.5 w-4.5 accent-brand-500"
+              />
+              <span className="text-sm text-white/80">
+                Ofrecemos ayuda con financiación / crédito hipotecario
+              </span>
+            </label>
+
+            <div className="sm:col-span-2">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-white/45">
+                Condiciones adicionales
+              </label>
+              <textarea
+                value={additionalConditions}
+                onChange={(e) => setAdditionalConditions(e.target.value)}
+                rows={3}
+                placeholder={"Escrituración incluida\nSala de ventas abierta todos los días"}
+                className="w-full rounded-xl border border-white/15 bg-ink-950 px-4 py-2.5 text-sm outline-none focus:border-brand-500"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-widest text-white/45">

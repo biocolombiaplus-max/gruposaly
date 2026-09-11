@@ -7,6 +7,7 @@ import { PROPERTY_TYPE_LABELS, type Property, type PropertyType } from "@/lib/pr
 
 const FILTERS: { value: PropertyType | "todos"; label: string }[] = [
   { value: "todos", label: "Todos" },
+  { value: "proyecto_nuevo", label: PROPERTY_TYPE_LABELS.proyecto_nuevo },
   { value: "casa", label: PROPERTY_TYPE_LABELS.casa },
   { value: "edificio", label: PROPERTY_TYPE_LABELS.edificio },
   { value: "local", label: PROPERTY_TYPE_LABELS.local },

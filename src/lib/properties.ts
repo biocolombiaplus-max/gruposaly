@@ -1,10 +1,17 @@
 import { getDb } from "./firebaseAdmin";
 import { slugify, type Property } from "./propertyTypes";
 
-export type { Property, PropertyStatus, PropertyType } from "./propertyTypes";
+export type {
+  Property,
+  PropertyStatus,
+  PropertyType,
+  NewProjectDetails,
+  NewProjectStage,
+} from "./propertyTypes";
 export {
   PROPERTY_STATUS_LABELS,
   PROPERTY_TYPE_LABELS,
+  NEW_PROJECT_STAGE_LABELS,
   slugify,
 } from "./propertyTypes";
 
