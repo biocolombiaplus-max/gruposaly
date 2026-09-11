@@ -11,15 +11,15 @@ interface LogoProps {
 }
 
 const SIZE_CLASSES: Record<LogoSize, string> = {
-  md: "h-20 w-auto object-contain sm:h-24",
-  lg: "h-28 w-auto object-contain sm:h-32",
-  xl: "h-32 w-auto object-contain sm:h-44",
+  md: "h-16 w-auto object-contain sm:h-20",
+  lg: "h-24 w-auto object-contain sm:h-28",
+  xl: "h-28 w-auto object-contain sm:h-36",
 };
 
 const WORDMARK_SIZE_CLASSES: Record<LogoSize, string> = {
-  md: "text-base sm:text-lg",
-  lg: "text-lg sm:text-xl",
-  xl: "text-xl sm:text-2xl",
+  md: "text-sm sm:text-base",
+  lg: "text-base sm:text-lg",
+  xl: "text-lg sm:text-xl",
 };
 
 export default function Logo({
@@ -46,7 +46,7 @@ export default function Logo({
         {showText && (
           <span
             className={clsx(
-              "-mt-1 font-display font-black uppercase leading-none tracking-tight text-white",
+              "-mt-2.5 font-display font-black uppercase leading-none tracking-tight text-white",
               WORDMARK_SIZE_CLASSES[size],
               textClassName
             )}
