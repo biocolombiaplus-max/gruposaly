@@ -2,17 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Images, LogOut, Building, LayoutTemplate } from "lucide-react";
+import { Images, LogOut, Building, FileText, LayoutTemplate } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
 import SiteImagesManager from "./SiteImagesManager";
 import SiteSettingsManager from "./SiteSettingsManager";
+import BrochureGenerator from "./BrochureGenerator";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
 import type { SiteSettings } from "@/lib/siteSettingsTypes";
 
-type Tab = "servicios" | "inmuebles" | "sitio";
+type Tab = "servicios" | "inmuebles" | "sitio" | "brochure";
 
 export default function AdminDashboard({
   initialServiceImages,
@@ -38,6 +39,7 @@ export default function AdminDashboard({
     { id: "inmuebles", label: "Inmuebles en Venta", icon: Building },
     { id: "servicios", label: "Fotos de Servicios", icon: Images },
     { id: "sitio", label: "Logo, Imágenes y Anuncios", icon: LayoutTemplate },
+    { id: "brochure", label: "Brochure PDF", icon: FileText },
   ];
 
   return (
@@ -90,6 +92,7 @@ export default function AdminDashboard({
             <SiteImagesManager initialImages={initialSiteImages} />
           </div>
         )}
+        {tab === "brochure" && <BrochureGenerator />}
       </div>
     </div>
   );
