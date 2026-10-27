@@ -1,19 +1,17 @@
 import Counter from "@/components/Counter";
 import FadeIn from "@/components/FadeIn";
+import { DEFAULT_STATS, type SiteStat } from "@/lib/siteSettingsTypes";
 
-const STATS = [
-  { value: 12, suffix: "+", label: "Años de experiencia" },
-  { value: 120, suffix: "+", label: "Proyectos entregados" },
-  { value: 45000, suffix: "+", label: "m² construidos" },
-  { value: 98, suffix: "%", label: "Clientes satisfechos" },
-];
+interface StatsSectionProps {
+  stats?: SiteStat[];
+}
 
-export default function StatsSection() {
+export default function StatsSection({ stats = DEFAULT_STATS }: StatsSectionProps) {
   return (
     <section className="border-y border-white/10 bg-ink-950 py-16">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {STATS.map((stat, i) => (
+          {stats.map((stat, i) => (
             <FadeIn key={stat.label} delay={i * 0.08} className="text-center">
               <p className="font-display text-4xl font-black text-brand-400 sm:text-5xl">
                 <Counter value={stat.value} suffix={stat.suffix} />

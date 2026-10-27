@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Megaphone, Plus, Share2, Trash2 } from "lucide-react";
+import { BarChart3, Megaphone, Plus, Share2, Trash2 } from "lucide-react";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -19,11 +19,14 @@ import {
   type LogoAlign,
   type LogoSize,
   type SiteSettings,
+  type SiteStat,
   type SocialLinks,
 } from "@/lib/siteSettingsTypes";
 
 const SIZES: LogoSize[] = ["md", "lg", "xl"];
 const ALIGNS: LogoAlign[] = ["left", "center", "right"];
+const MAX_STATS = 6;
+const EMPTY_STAT: SiteStat = { value: 0, suffix: "", label: "" };
 
 const SOCIAL_ICON_MAP = {
   facebook: FacebookIcon,
@@ -47,6 +50,7 @@ export default function SiteSettingsManager({
   const [announcements, setAnnouncements] = useState(initialSettings.announcements);
   const [newAnnouncement, setNewAnnouncement] = useState("");
   const [socialLinks, setSocialLinks] = useState<SocialLinks>(initialSettings.socialLinks);
+  const [stats, setStats] = useState<SiteStat[]>(initialSettings.stats);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -105,6 +109,36 @@ export default function SiteSettingsManager({
 
   function handleSocialBlur() {
     save({ socialLinks });
+  }
+
+  function handleStatChange(index: number, field: keyof SiteStat, raw: string) {
+    setStats((prev) =>
+      prev.map((s, i) =>
+        i === index
+          ? { ...s, [field]: field === "value" ? Number(raw) || 0 : raw }
+          : s
+      )
+    );
+  }
+
+  function handleStatBlur() {
+    save({ stats });
+  }
+
+  function handleAddStat() {
+    setStats((prev) => {
+      const next = [...prev, EMPTY_STAT];
+      save({ stats: next });
+      return next;
+    });
+  }
+
+  function handleRemoveStat(index: number) {
+    setStats((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      save({ stats: next });
+      return next;
+    });
   }
 
   return (
@@ -275,6 +309,80 @@ export default function SiteSettingsManager({
             );
           })}
         </div>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-ink-950/50 p-5">
+        <div className="flex items-center gap-2">
+          <BarChart3 className="h-4 w-4 text-brand-400" />
+          <h3 className="font-display text-sm font-bold">Cifras y Resultados</h3>
+        </div>
+        <p className="mt-1 text-xs text-white/45">
+          Los números que aparecen en la página principal (años de
+          experiencia, proyectos entregados, etc.) y en el brochure PDF.
+        </p>
+
+        <div className="mt-4 space-y-3">
+          {stats.map((stat, i) => (
+            <div
+              key={i}
+              className="grid grid-cols-[1fr_auto] items-start gap-2 rounded-xl border border-white/10 bg-ink-900/40 p-3 sm:grid-cols-[5rem_4rem_1fr_auto]"
+            >
+              <div>
+                <label className="mb-1 block text-[10px] font-semibold uppercase tracking-widest text-white/40">
+                  Valor
+                </label>
+                <input
+                  type="number"
+                  value={stat.value}
+                  onChange={(e) => handleStatChange(i, "value", e.target.value)}
+                  onBlur={handleStatBlur}
+                  className="w-full rounded-lg border border-white/15 bg-ink-950 px-2.5 py-2 text-sm outline-none focus:border-brand-500"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[10px] font-semibold uppercase tracking-widest text-white/40">
+                  Sufijo
+                </label>
+                <input
+                  value={stat.suffix}
+                  onChange={(e) => handleStatChange(i, "suffix", e.target.value)}
+                  onBlur={handleStatBlur}
+                  placeholder="+ ó %"
+                  className="w-full rounded-lg border border-white/15 bg-ink-950 px-2.5 py-2 text-sm outline-none focus:border-brand-500"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[10px] font-semibold uppercase tracking-widest text-white/40">
+                  Etiqueta
+                </label>
+                <input
+                  value={stat.label}
+                  onChange={(e) => handleStatChange(i, "label", e.target.value)}
+                  onBlur={handleStatBlur}
+                  placeholder="Años de experiencia"
+                  className="w-full rounded-lg border border-white/15 bg-ink-950 px-2.5 py-2 text-sm outline-none focus:border-brand-500"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRemoveStat(i)}
+                aria-label="Eliminar cifra"
+                className="mt-5 flex h-9 w-9 shrink-0 items-center justify-center justify-self-end rounded-full text-white/40 hover:bg-red-500/15 hover:text-red-400 sm:mt-5"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleAddStat}
+          disabled={stats.length >= MAX_STATS}
+          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:border-brand-400/50 hover:text-white disabled:opacity-50"
+        >
+          <Plus className="h-4 w-4" /> Agregar cifra
+        </button>
       </div>
 
       {saving && <p className="text-xs text-white/40">Guardando...</p>}

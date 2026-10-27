@@ -6,6 +6,7 @@ import {
   SOCIAL_PLATFORMS,
   type LogoAlign,
   type LogoSize,
+  type SiteStat,
   type SocialLinks,
 } from "@/lib/siteSettingsTypes";
 
@@ -16,6 +17,9 @@ const VALID_ALIGNS: LogoAlign[] = ["left", "center", "right"];
 const MAX_ANNOUNCEMENTS = 12;
 const MAX_ANNOUNCEMENT_LENGTH = 120;
 const MAX_URL_LENGTH = 300;
+const MAX_STATS = 6;
+const MAX_STAT_LABEL_LENGTH = 40;
+const MAX_STAT_SUFFIX_LENGTH = 6;
 
 export async function GET() {
   const settings = await getSiteSettings();
@@ -78,6 +82,28 @@ export async function PUT(request: NextRequest) {
       }
     }
     update.socialLinks = socialLinks;
+  }
+
+  if (body.stats !== undefined) {
+    if (!Array.isArray(body.stats)) {
+      return NextResponse.json({ error: "Lista de cifras inválida." }, { status: 400 });
+    }
+    const stats: SiteStat[] = body.stats
+      .filter((s: unknown): s is Record<string, unknown> => typeof s === "object" && s !== null)
+      .map((s: Record<string, unknown>) => ({
+        value: Number.isFinite(Number(s.value)) ? Number(s.value) : 0,
+        suffix: typeof s.suffix === "string" ? s.suffix.trim().slice(0, MAX_STAT_SUFFIX_LENGTH) : "",
+        label: typeof s.label === "string" ? s.label.trim().slice(0, MAX_STAT_LABEL_LENGTH) : "",
+      }))
+      .filter((s: SiteStat) => s.label)
+      .slice(0, MAX_STATS);
+    if (stats.length === 0) {
+      return NextResponse.json(
+        { error: "Agrega al menos una cifra con su etiqueta." },
+        { status: 400 }
+      );
+    }
+    update.stats = stats;
   }
 
   try {

@@ -11,12 +11,19 @@ export type SocialPlatform =
 
 export type SocialLinks = Partial<Record<SocialPlatform, string>>;
 
+export interface SiteStat {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
 export interface SiteSettings {
   logoSize: LogoSize;
   logoAlign: LogoAlign;
   logoShowWordmark: boolean;
   announcements: string[];
   socialLinks: SocialLinks;
+  stats: SiteStat[];
 }
 
 export const DEFAULT_ANNOUNCEMENTS: string[] = [
@@ -27,12 +34,20 @@ export const DEFAULT_ANNOUNCEMENTS: string[] = [
   "Nuevos inmuebles disponibles — aparta el tuyo hoy",
 ];
 
+export const DEFAULT_STATS: SiteStat[] = [
+  { value: 12, suffix: "+", label: "Años de experiencia" },
+  { value: 120, suffix: "+", label: "Proyectos entregados" },
+  { value: 45000, suffix: "+", label: "m² construidos" },
+  { value: 98, suffix: "%", label: "Clientes satisfechos" },
+];
+
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   logoSize: "lg",
   logoAlign: "left",
   logoShowWordmark: false,
   announcements: DEFAULT_ANNOUNCEMENTS,
   socialLinks: {},
+  stats: DEFAULT_STATS,
 };
 
 export const LOGO_SIZE_LABELS: Record<LogoSize, string> = {

@@ -5,13 +5,22 @@ import {
   type LogoAlign,
   type LogoSize,
   type SiteSettings,
+  type SiteStat,
   type SocialLinks,
 } from "./siteSettingsTypes";
 
-export type { SiteSettings, LogoSize, LogoAlign, SocialLinks, SocialPlatform } from "./siteSettingsTypes";
+export type {
+  SiteSettings,
+  LogoSize,
+  LogoAlign,
+  SocialLinks,
+  SocialPlatform,
+  SiteStat,
+} from "./siteSettingsTypes";
 export {
   DEFAULT_SITE_SETTINGS,
   DEFAULT_ANNOUNCEMENTS,
+  DEFAULT_STATS,
   LOGO_SIZE_LABELS,
   LOGO_ALIGN_LABELS,
   SOCIAL_PLATFORMS,
@@ -32,6 +41,21 @@ function parseSocialLinks(value: unknown): SocialLinks {
   return links;
 }
 
+function parseStats(value: unknown): SiteStat[] {
+  if (!Array.isArray(value)) return DEFAULT_SITE_SETTINGS.stats;
+  const stats = value
+    .filter(
+      (s): s is Record<string, unknown> => typeof s === "object" && s !== null
+    )
+    .map((s) => ({
+      value: Number.isFinite(Number(s.value)) ? Number(s.value) : 0,
+      suffix: typeof s.suffix === "string" ? s.suffix : "",
+      label: typeof s.label === "string" ? s.label.trim() : "",
+    }))
+    .filter((s) => s.label);
+  return stats.length > 0 ? stats : DEFAULT_SITE_SETTINGS.stats;
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
   const doc = await getDb().collection(COLLECTION).doc(DOC_ID).get();
   const data = doc.data();
@@ -47,6 +71,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       ? data.announcements.filter((a: unknown) => typeof a === "string")
       : DEFAULT_SITE_SETTINGS.announcements,
     socialLinks: parseSocialLinks(data.socialLinks),
+    stats: parseStats(data.stats),
   };
 }
 

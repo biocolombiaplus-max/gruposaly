@@ -18,8 +18,9 @@ import {
 import type { ServiceDefinition } from "@/lib/services";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/services";
 import type { Property } from "@/lib/propertyTypes";
-import type { SocialLinks } from "@/lib/siteSettingsTypes";
+import type { SiteStat, SocialLinks } from "@/lib/siteSettingsTypes";
 import { formatCOP } from "@/lib/format";
+import type { PdfImage } from "./fetchImageForPdf";
 
 // Clean, predictable wrapping — no "Hospi-talaria"-style hyphen breaks.
 Font.registerHyphenationCallback((word) => [word]);
@@ -172,13 +173,14 @@ function CtaBand({ text }: { text: string }) {
 }
 
 interface BrochureDocumentProps {
-  logoUrl?: string | null;
-  heroImage?: string | null;
-  services: { service: ServiceDefinition; photo?: string | null }[];
+  logoImage?: PdfImage | null;
+  heroImage?: PdfImage | null;
+  services: { service: ServiceDefinition; photo?: PdfImage | null }[];
   includeAbout: boolean;
   includeProcess: boolean;
   includeStats: boolean;
-  properties: Property[];
+  stats: SiteStat[];
+  properties: { property: Property; photo?: PdfImage | null }[];
   includeContact: boolean;
   socialLinks: SocialLinks;
 }
@@ -221,20 +223,14 @@ const PROCESS_STEPS = [
   },
 ];
 
-const STATS = [
-  { value: "12+", label: "Años de experiencia" },
-  { value: "120+", label: "Proyectos entregados" },
-  { value: "45.000+", label: "m² construidos" },
-  { value: "98%", label: "Clientes satisfechos" },
-];
-
 export default function BrochureDocument({
-  logoUrl,
+  logoImage,
   heroImage,
   services,
   includeAbout,
   includeProcess,
   includeStats,
+  stats,
   properties,
   includeContact,
   socialLinks,
@@ -283,8 +279,8 @@ export default function BrochureDocument({
         </View>
 
         <View style={{ position: "absolute", top: 56, left: 50 }}>
-          {logoUrl ? (
-            <Image src={logoUrl} style={{ width: 92, height: 92, objectFit: "contain" }} />
+          {logoImage ? (
+            <Image src={logoImage} style={{ width: 92, height: 92, objectFit: "contain" }} />
           ) : (
             <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 20, color: COLORS.white }}>
               GRUPO SALY
@@ -521,10 +517,11 @@ export default function BrochureDocument({
             <Text style={styles.h1Dark}>Cifras que respaldan nuestro trabajo</Text>
 
             <View style={{ marginTop: 40, flexDirection: "row", flexWrap: "wrap", gap: 24 }}>
-              {STATS.map((stat) => (
+              {stats.map((stat) => (
                 <View key={stat.label} style={{ width: "42%" }}>
                   <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 40, color: COLORS.brand400 }}>
-                    {stat.value}
+                    {stat.value.toLocaleString("es-CO")}
+                    {stat.suffix}
                   </Text>
                   <Text style={{ marginTop: 4, fontSize: 9.5, letterSpacing: 1, color: COLORS.whiteFaint }}>
                     {stat.label.toUpperCase()}
@@ -546,7 +543,7 @@ export default function BrochureDocument({
               <Text style={styles.h1}>Proyectos destacados disponibles</Text>
 
               <View style={{ marginTop: 28 }}>
-                {properties.map((p, i) => (
+                {properties.map(({ property: p, photo }, i) => (
                   <View
                     key={p.id}
                     style={{
@@ -558,9 +555,9 @@ export default function BrochureDocument({
                       alignItems: "center",
                     }}
                   >
-                    {p.images[0] ? (
+                    {photo ? (
                       <Image
-                        src={p.images[0]}
+                        src={photo}
                         style={{ width: 86, height: 64, objectFit: "cover" }}
                       />
                     ) : (

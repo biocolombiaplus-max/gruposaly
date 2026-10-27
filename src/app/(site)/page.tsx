@@ -12,14 +12,17 @@ import FinalCTA from "@/components/home/FinalCTA";
 import { getAllServiceImages } from "@/lib/serviceImages";
 import { getAllProperties } from "@/lib/properties";
 import { getAllSiteImages } from "@/lib/siteImages";
+import { getSiteSettings } from "@/lib/siteSettings";
+import { DEFAULT_SITE_SETTINGS } from "@/lib/siteSettingsTypes";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [serviceImages, properties, siteImages] = await Promise.all([
+  const [serviceImages, properties, siteImages, siteSettings] = await Promise.all([
     getAllServiceImages(),
     getAllProperties(),
     getAllSiteImages(),
+    getSiteSettings().catch(() => DEFAULT_SITE_SETTINGS),
   ]);
 
   const ventasCover = properties.find((p) => p.images[0])?.images[0] ?? null;
@@ -38,7 +41,7 @@ export default async function Home() {
         ventasCover={ventasCover}
         ventasCount={properties.length}
       />
-      <StatsSection />
+      <StatsSection stats={siteSettings.stats} />
       <AboutSection backgroundImage={siteImages.about} />
       <WorkShowcase images={workImages} />
       <FeaturedProperties properties={properties} />

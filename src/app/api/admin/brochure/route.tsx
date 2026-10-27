@@ -6,10 +6,12 @@ import { getSiteImage } from "@/lib/siteImages";
 import { getAllServiceImages } from "@/lib/serviceImages";
 import { getAllProperties } from "@/lib/properties";
 import { getSiteSettings } from "@/lib/siteSettings";
+import { DEFAULT_STATS } from "@/lib/siteSettingsTypes";
 import { SERVICES, VENTAS_SERVICE, type ServiceDefinition } from "@/lib/services";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import BrochureDocument from "@/lib/brochure/BrochureDocument";
 import type { BrochureSection } from "@/lib/brochure/brochureTypes";
+import { fetchImageForPdf } from "@/lib/brochure/fetchImageForPdf";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -59,25 +61,45 @@ export async function GET(request: NextRequest) {
     getSiteSettings().catch(() => null),
   ]);
 
-  const services = ALL_SERVICE_DEFS.filter((s) => selectedServiceSlugs.includes(s.slug)).map(
-    (service) => ({
-      service,
-      photo: serviceImages[service.slug]?.[0] ?? null,
-    })
+  const selectedServices = ALL_SERVICE_DEFS.filter((s) =>
+    selectedServiceSlugs.includes(s.slug)
   );
-
-  const properties = sections.has("properties")
+  const featuredProperties = sections.has("properties")
     ? allProperties.filter((p) => p.status === "disponible").slice(0, 4)
     : [];
 
+  // All images uploaded through the admin are stored as WEBP, which
+  // @react-pdf/renderer's image resolver can't decode — fetch + re-encode
+  // every image we'll actually embed (JPEG/PNG) before handing it to the
+  // PDF document, instead of passing raw source URLs.
+  const [logoImage, heroImg, servicePhotos, propertyPhotos] = await Promise.all([
+    fetchImageForPdf(logoUrl, "png"),
+    fetchImageForPdf(heroImage, "jpg"),
+    Promise.all(
+      selectedServices.map((s) => fetchImageForPdf(serviceImages[s.slug]?.[0] ?? null, "jpg"))
+    ),
+    Promise.all(featuredProperties.map((p) => fetchImageForPdf(p.images[0] ?? null, "jpg"))),
+  ]);
+
+  const services = selectedServices.map((service, i) => ({
+    service,
+    photo: servicePhotos[i],
+  }));
+
+  const properties = featuredProperties.map((property, i) => ({
+    property,
+    photo: propertyPhotos[i],
+  }));
+
   const document = (
     <BrochureDocument
-      logoUrl={logoUrl}
-      heroImage={heroImage}
+      logoImage={logoImage}
+      heroImage={heroImg}
       services={services}
       includeAbout={sections.has("about")}
       includeProcess={sections.has("process")}
       includeStats={sections.has("stats")}
+      stats={siteSettings?.stats ?? DEFAULT_STATS}
       properties={properties}
       includeContact={sections.has("contact")}
       socialLinks={siteSettings?.socialLinks ?? {}}
