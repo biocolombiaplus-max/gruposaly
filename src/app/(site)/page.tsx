@@ -27,10 +27,12 @@ export default async function Home() {
 
   const ventasCover = properties.find((p) => p.images[0])?.images[0] ?? null;
 
-  const workImages = [
-    ...Object.values(serviceImages).flat(),
-    ...properties.flatMap((p) => p.images),
-  ].slice(0, 16);
+  const workImages = Array.from(
+    new Set([
+      ...Object.values(serviceImages).flat(),
+      ...properties.flatMap((p) => p.images),
+    ])
+  ).slice(0, 16);
 
   return (
     <>
