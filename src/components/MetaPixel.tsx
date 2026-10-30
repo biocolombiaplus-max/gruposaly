@@ -28,7 +28,8 @@ export default function MetaPixel() {
 
   return (
     <>
-      <Script id="meta-pixel-base" strategy="afterInteractive">
+      {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document -- that rule only knows the Pages Router's pages/_document.js; this *is* rendered from the App Router root layout (src/app/layout.tsx), which is the correct beforeInteractive location there. */}
+      <Script id="meta-pixel-base" strategy="beforeInteractive">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
