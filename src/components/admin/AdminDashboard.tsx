@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Images, LogOut, Building, FileText, LayoutTemplate } from "lucide-react";
+import { Images, LogOut, Building, FileText, LayoutTemplate, ShoppingBag } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
 import SiteImagesManager from "./SiteImagesManager";
 import SiteSettingsManager from "./SiteSettingsManager";
 import BrochureGenerator from "./BrochureGenerator";
+import MetaCatalogCard from "./MetaCatalogCard";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
 import type { SiteSettings } from "@/lib/siteSettingsTypes";
 
-type Tab = "servicios" | "inmuebles" | "sitio" | "brochure";
+type Tab = "servicios" | "inmuebles" | "sitio" | "brochure" | "catalogo";
 
 export default function AdminDashboard({
   initialServiceImages,
@@ -40,6 +41,7 @@ export default function AdminDashboard({
     { id: "servicios", label: "Fotos de Servicios", icon: Images },
     { id: "sitio", label: "Logo, Imágenes y Anuncios", icon: LayoutTemplate },
     { id: "brochure", label: "Brochure PDF", icon: FileText },
+    { id: "catalogo", label: "Catálogo Meta Ads", icon: ShoppingBag },
   ];
 
   return (
@@ -93,6 +95,7 @@ export default function AdminDashboard({
           </div>
         )}
         {tab === "brochure" && <BrochureGenerator />}
+        {tab === "catalogo" && <MetaCatalogCard />}
       </div>
     </div>
   );
