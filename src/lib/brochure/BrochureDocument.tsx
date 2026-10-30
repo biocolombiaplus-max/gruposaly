@@ -249,7 +249,10 @@ export default function BrochureDocument({
       <Page size="A4" style={styles.darkPage}>
         <View style={styles.bleed}>
           {heroImage && (
-            <Image src={heroImage} style={{ width: "100%", height: "100%" }} />
+            <Image
+              src={heroImage}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           )}
           <View
             style={{
@@ -394,7 +397,10 @@ export default function BrochureDocument({
           <View style={{ height: 240, position: "relative" }}>
             {photo ? (
               <>
-                <Image src={photo} style={{ width: "100%", height: "100%" }} />
+                <Image
+                  src={photo}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
                 <View
                   style={{
                     position: "absolute",
