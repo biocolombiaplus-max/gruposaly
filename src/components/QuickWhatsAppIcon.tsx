@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react";
 import { whatsappLink } from "@/lib/services";
+import { trackWhatsAppClick } from "@/lib/tracking";
 
 export default function QuickWhatsAppIcon({
   message,
@@ -15,7 +16,10 @@ export default function QuickWhatsAppIcon({
       href={whatsappLink(message)}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        trackWhatsAppClick(ariaLabel, message);
+      }}
       aria-label={ariaLabel}
       className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 backdrop-blur transition-all hover:border-[#25D366] hover:bg-[#25D366]/15 hover:text-[#25D366]"
     >

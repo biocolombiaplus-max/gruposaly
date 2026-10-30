@@ -2,6 +2,7 @@
 
 import { MessageCircle } from "lucide-react";
 import { whatsappLink } from "@/lib/services";
+import { trackWhatsAppClick } from "@/lib/tracking";
 import clsx from "clsx";
 
 interface WhatsAppButtonProps {
@@ -26,6 +27,7 @@ export default function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackWhatsAppClick(label, message)}
       className={clsx(
         "group relative inline-flex items-center justify-center",
         className

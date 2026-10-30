@@ -3,6 +3,9 @@
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { DEFAULT_WHATSAPP_MESSAGE, whatsappLink } from "@/lib/services";
+import { trackWhatsAppClick } from "@/lib/tracking";
+
+const FLOATING_BUTTON_LABEL = "Botón flotante";
 
 export default function WhatsAppFloatingButton() {
   const href = whatsappLink(DEFAULT_WHATSAPP_MESSAGE);
@@ -12,6 +15,7 @@ export default function WhatsAppFloatingButton() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackWhatsAppClick(FLOATING_BUTTON_LABEL, DEFAULT_WHATSAPP_MESSAGE)}
       aria-label="Escríbenos por WhatsApp"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}

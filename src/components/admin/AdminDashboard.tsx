@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Images, LogOut, Building, FileText, LayoutTemplate, ShoppingBag } from "lucide-react";
+import { Images, LogOut, Building, FileText, LayoutTemplate, ShoppingBag, BarChart3 } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
 import SiteImagesManager from "./SiteImagesManager";
@@ -10,12 +10,13 @@ import SiteSettingsManager from "./SiteSettingsManager";
 import BrochureGenerator from "./BrochureGenerator";
 import MetaCatalogCard from "./MetaCatalogCard";
 import ServiceAdsKit from "./ServiceAdsKit";
+import AnalyticsDashboard from "./AnalyticsDashboard";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
 import type { SiteSettings } from "@/lib/siteSettingsTypes";
 
-type Tab = "servicios" | "inmuebles" | "sitio" | "brochure" | "catalogo";
+type Tab = "servicios" | "inmuebles" | "sitio" | "brochure" | "catalogo" | "rendimiento";
 
 export default function AdminDashboard({
   initialServiceImages,
@@ -43,6 +44,7 @@ export default function AdminDashboard({
     { id: "sitio", label: "Logo, Imágenes y Anuncios", icon: LayoutTemplate },
     { id: "brochure", label: "Brochure PDF", icon: FileText },
     { id: "catalogo", label: "Catálogo Meta Ads", icon: ShoppingBag },
+    { id: "rendimiento", label: "Rendimiento", icon: BarChart3 },
   ];
 
   return (
@@ -102,6 +104,7 @@ export default function AdminDashboard({
             <ServiceAdsKit serviceImages={initialServiceImages} />
           </div>
         )}
+        {tab === "rendimiento" && <AnalyticsDashboard />}
       </div>
     </div>
   );

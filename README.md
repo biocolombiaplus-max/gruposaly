@@ -32,6 +32,10 @@ desplegarse en **Vercel**.
     redimensiona y convierte a WEBP automáticamente, se sube a
     **Cloudflare R2**, y se muestra siempre recortada de forma uniforme
     (`object-fit: cover`) en toda la web.
+  - Pestaña **Rendimiento**: visitas y clics en los botones de WhatsApp
+    (por servicio y por campaña de Meta Ads), con el **Píxel de Meta**
+    conectado en el sitio público para poder hacer remarketing desde
+    Business Manager sin pedirle el número a nadie.
 
 ## Por qué Firestore + Cloudflare R2
 
@@ -114,6 +118,11 @@ R2_SECRET_ACCESS_KEY=tu-secret-access-key
 R2_BUCKET_NAME=gruposaly-media
 R2_PUBLIC_URL=https://pub-xxxxxxxxxxxx.r2.dev
 
+# Opcional — habilita el Píxel de Meta (remarketing en Facebook/Instagram).
+# Se obtiene en Events Manager de Meta Business Suite. Sin esta variable el
+# sitio funciona igual, solo que sin el píxel.
+NEXT_PUBLIC_META_PIXEL_ID=
+
 ADMIN_PASSWORD=elige-una-contraseña-segura
 ADMIN_SESSION_SECRET=una-cadena-aleatoria-larga
 ```
@@ -143,8 +152,9 @@ configurado arriba.
 3. En **Settings → Environment Variables** agrega las 3 de Firebase
    (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`),
    las 5 de Cloudflare R2 (`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
-   `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL`) y
-   `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`.
+   `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL`),
+   `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` y, si quieres remarketing en
+   Meta, `NEXT_PUBLIC_META_PIXEL_ID`.
    - Importante con `FIREBASE_PRIVATE_KEY`: pégala tal cual, con los `\n`
      literales como en `.env.local` (Vercel la guarda como string; el
      código ya la convierte a saltos de línea reales).

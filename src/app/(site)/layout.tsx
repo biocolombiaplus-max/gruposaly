@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import MetaPixel from "@/components/MetaPixel";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { getSiteImage } from "@/lib/siteImages";
 import { getSiteSettings } from "@/lib/siteSettings";
 import { DEFAULT_SITE_SETTINGS } from "@/lib/siteSettingsTypes";
@@ -15,6 +17,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 
   return (
     <>
+      <MetaPixel />
+      <AnalyticsTracker />
       <AnnouncementBar messages={settings.announcements} />
       <Header
         logoUrl={logoUrl}
