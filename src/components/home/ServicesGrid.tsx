@@ -57,8 +57,8 @@ export default function ServicesGrid({
                         className={`h-full w-full bg-gradient-to-br ${service.heroGradient} opacity-25 transition-opacity duration-500 group-hover:opacity-35`}
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/35 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-ink-950/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 from-0% via-ink-950/15 via-55% to-transparent to-85%" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-ink-950/30 to-transparent to-40%" />
                   </div>
 
                   <div className="relative flex items-center justify-between p-6">
