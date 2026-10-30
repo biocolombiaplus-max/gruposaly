@@ -4,7 +4,7 @@ import { getFirestore, type Firestore } from "firebase-admin/firestore";
 // Server-only. Firestore access goes through this Admin SDK instance from
 // API routes and Server Components — the browser never talks to Firebase
 // directly, so there is nothing to configure in Firestore security rules.
-// Uploaded images are handled separately by Vercel Blob (see lib/upload.ts).
+// Uploaded images are handled separately by Cloudflare R2 (see lib/upload.ts).
 
 function getApp(): App {
   const existing = getApps();

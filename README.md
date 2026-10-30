@@ -3,7 +3,7 @@
 Landing page corporativa + módulo administrativo para Grupo Saly (construcción,
 remodelación e inmobiliaria). Construido con Next.js 16 (App Router),
 TypeScript, Tailwind CSS y Framer Motion. Los datos viven en **Firestore**
-(gratis, plan Spark) y las imágenes en **Vercel Blob** (gratis, plan Hobby) —
+(gratis, plan Spark) y las imágenes en **Cloudflare R2** (gratis, 10GB) —
 ninguno de los dos pide tarjeta para el uso de este sitio. Pensado para
 desplegarse en **Vercel**.
 
@@ -29,11 +29,11 @@ desplegarse en **Vercel**.
     sección "Sobre Grupo Saly" y del CTA final — cada una es una imagen
     única que se reemplaza al subir una nueva.
   - Cualquier foto subida (de cualquier tamaño o proporción) se
-    redimensiona y convierte a WEBP automáticamente, se sube a **Vercel
-    Blob**, y se muestra siempre recortada de forma uniforme
+    redimensiona y convierte a WEBP automáticamente, se sube a
+    **Cloudflare R2**, y se muestra siempre recortada de forma uniforme
     (`object-fit: cover`) en toda la web.
 
-## Por qué Firestore + Vercel Blob
+## Por qué Firestore + Cloudflare R2
 
 Vercel es **serverless**: el disco no persiste entre peticiones ni entre
 despliegues. Por eso los inmuebles, las galerías de servicios y las
@@ -43,10 +43,11 @@ imágenes subidas desde el panel admin se guardan afuera:
   de Next.js (API routes) usa el **Firebase Admin SDK** con una cuenta de
   servicio — el navegador nunca habla directo con Firebase, así que no
   hay que tocar reglas de seguridad.
-- **Vercel Blob** → los archivos de imagen (ya redimensionados a WEBP).
-  Como el sitio ya se despliega en Vercel, no hace falta crear cuenta en
-  otro proveedor ni agregar tarjeta: el plan Hobby de Vercel incluye Blob
-  Storage gratis dentro de sus límites.
+- **Cloudflare R2** → los archivos de imagen (ya redimensionados a WEBP).
+  R2 tiene un plan gratis genuino: 10GB de almacenamiento y, a
+  diferencia de casi cualquier otro proveedor, **nunca cobra por tráfico
+  de salida** (ver fotos en la web no gasta la cuota) — así que no hay
+  sorpresas de facturación que puedan suspender el almacenamiento.
 
 ## 1. Configurar Firestore (Firebase)
 
@@ -64,17 +65,38 @@ imágenes subidas desde el panel admin se guardan afuera:
    - `client_email`
    - `private_key`
 
-## 2. Configurar Vercel Blob
+## 2. Configurar Cloudflare R2
 
-1. En el dashboard de tu proyecto en [vercel.com](https://vercel.com) →
-   pestaña **Storage** → **Create Database** → elige **Blob**.
-2. Dale un nombre (ej. `gruposaly-media`) y conéctalo a tu proyecto.
-3. Vercel crea automáticamente la variable `BLOB_READ_WRITE_TOKEN` y la
-   agrega a las Environment Variables del proyecto — no tienes que
-   copiarla a mano para producción.
-4. Para desarrollo local, copia ese mismo valor a tu `.env.local` (lo ves
-   en Storage → tu Blob store → pestaña **".env.local"**, o en Settings →
-   Environment Variables → revela el valor).
+1. Entra a [dash.cloudflare.com](https://dash.cloudflare.com) y crea una
+   cuenta gratis (no pide tarjeta para R2 dentro del límite gratuito).
+2. En el menú lateral, busca **R2 Object Storage** → **Create bucket**.
+   Dale un nombre, por ejemplo `gruposaly-media`, y créalo (ubicación
+   automática está bien).
+3. Entra al bucket recién creado → pestaña **Settings** → sección
+   **Public access** → **Allow Access** (confirma la advertencia). Esto
+   te da una URL pública del tipo
+   `https://pub-xxxxxxxxxxxx.r2.dev` — esa es tu `R2_PUBLIC_URL`
+   (cópiala tal cual, sin `/` al final).
+4. Para las credenciales: en el menú **R2 Object Storage** (no dentro del
+   bucket) → **Manage API tokens** → **Create API token**. Dale permisos
+   **Object Read & Write**, y si te deja limitarlo a un bucket específico,
+   elige el que creaste. Al crearlo te muestra (una sola vez, guárdalos):
+   - **Access Key ID** → `R2_ACCESS_KEY_ID`
+   - **Secret Access Key** → `R2_SECRET_ACCESS_KEY`
+5. El **Account ID** (`R2_ACCOUNT_ID`) lo ves en la misma pantalla de R2
+   Object Storage, en la barra lateral derecha, o en la URL del
+   dashboard (`dash.cloudflare.com/<account-id>/r2/...`).
+
+Con eso tienes las 5 variables que necesitas: `R2_ACCOUNT_ID`,
+`R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME` (el nombre
+que le pusiste al bucket) y `R2_PUBLIC_URL`.
+
+> Si ya tienes un dominio propio y quieres que las imágenes se vean en
+> `media.tudominio.com` en vez de `pub-xxxx.r2.dev`, puedes conectar un
+> dominio personalizado desde la misma pestaña **Settings → Custom
+> Domains** del bucket (requiere que ese dominio esté en Cloudflare) —
+> es opcional, el `.r2.dev` público funciona igual de bien para este
+> sitio.
 
 ## 3. Variables de entorno
 
@@ -86,7 +108,11 @@ FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@tu-proyecto-id.iam.gserviceaccount
 # Pega la private_key completa, con \n literales (no saltos de línea reales):
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIEv...\n-----END PRIVATE KEY-----\n"
 
-BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xxxxxxxxxxxxxxxxxxxx
+R2_ACCOUNT_ID=tu-account-id-de-cloudflare
+R2_ACCESS_KEY_ID=tu-access-key-id
+R2_SECRET_ACCESS_KEY=tu-secret-access-key
+R2_BUCKET_NAME=gruposaly-media
+R2_PUBLIC_URL=https://pub-xxxxxxxxxxxx.r2.dev
 
 ADMIN_PASSWORD=elige-una-contraseña-segura
 ADMIN_SESSION_SECRET=una-cadena-aleatoria-larga
@@ -106,7 +132,7 @@ npm run dev
 ```
 
 Abre [http://localhost:3000](http://localhost:3000). El panel admin
-(`/admin/login`) ya funciona en local usando el mismo Firestore/Blob
+(`/admin/login`) ya funciona en local usando el mismo Firestore/R2
 configurado arriba.
 
 ## 5. Desplegar en Vercel
@@ -114,17 +140,18 @@ configurado arriba.
 1. Sube el repositorio a GitHub (o el que ya tengas conectado).
 2. En [vercel.com](https://vercel.com) → **Add New → Project** → importa
    el repo.
-3. Sigue el paso **"2. Configurar Vercel Blob"** de arriba (crea el store
-   y conéctalo — esto ya deja `BLOB_READ_WRITE_TOKEN` puesta sola).
-4. En **Settings → Environment Variables** agrega las 3 de Firebase
-   (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`)
-   y `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`.
+3. En **Settings → Environment Variables** agrega las 3 de Firebase
+   (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`),
+   las 5 de Cloudflare R2 (`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+   `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_PUBLIC_URL`) y
+   `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`.
    - Importante con `FIREBASE_PRIVATE_KEY`: pégala tal cual, con los `\n`
      literales como en `.env.local` (Vercel la guarda como string; el
      código ya la convierte a saltos de línea reales).
-5. Deploy. Cada vez que subas una imagen o publiques un inmueble desde
-   `/admin`, queda guardado en Firestore/Vercel Blob — persiste sin
-   importar cuántas veces vuelvas a desplegar.
+4. Deploy. Cada vez que subas una imagen o publiques un inmueble desde
+   `/admin`, queda guardado en Firestore/Cloudflare R2 — persiste sin
+   importar cuántas veces vuelvas a desplegar, y R2 nunca se suspende
+   por consumo de tráfico dentro del plan gratis.
 
 No se necesita ninguna configuración adicional de `vercel.json`.
 
