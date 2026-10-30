@@ -24,14 +24,13 @@ export default function MetaCatalogCard() {
 
       <div className="rounded-2xl border border-amber-400/20 bg-amber-500/5 p-5">
         <p className="text-xs text-white/70">
-          <span className="font-semibold text-amber-300">Importante:</span> un
-          servicio solo aparece en el catálogo si tiene{" "}
-          <span className="text-white/90">al menos una foto</span> (pestaña
-          &quot;Fotos de Servicios&quot;) y un{" "}
-          <span className="text-white/90">precio de referencia</span>{" "}
-          (pestaña &quot;Logo, Imágenes y Anuncios&quot; → &quot;Precios de
-          referencia para el catálogo de Meta&quot;). Un inmueble solo
-          aparece si tiene al menos una foto.
+          <span className="font-semibold text-amber-300">Importante:</span>{" "}
+          Meta exige un precio numérico por cada artículo del catálogo — no
+          admite texto como &quot;Cotiza tu proyecto&quot;. Si no quieres
+          ponerle un precio de referencia a un servicio, déjalo en blanco (no
+          aparecerá en el catálogo) y usa mejor el{" "}
+          <span className="text-white/90">Kit de anuncios por servicio</span>{" "}
+          de abajo, pensado justo para eso.
         </p>
       </div>
 

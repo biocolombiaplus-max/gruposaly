@@ -9,6 +9,7 @@ import SiteImagesManager from "./SiteImagesManager";
 import SiteSettingsManager from "./SiteSettingsManager";
 import BrochureGenerator from "./BrochureGenerator";
 import MetaCatalogCard from "./MetaCatalogCard";
+import ServiceAdsKit from "./ServiceAdsKit";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
@@ -95,7 +96,12 @@ export default function AdminDashboard({
           </div>
         )}
         {tab === "brochure" && <BrochureGenerator />}
-        {tab === "catalogo" && <MetaCatalogCard />}
+        {tab === "catalogo" && (
+          <div className="space-y-10">
+            <MetaCatalogCard />
+            <ServiceAdsKit serviceImages={initialServiceImages} />
+          </div>
+        )}
       </div>
     </div>
   );
