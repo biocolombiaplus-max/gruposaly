@@ -14,10 +14,24 @@ export default function MetaCatalogCard() {
           </h3>
         </div>
         <p className="mt-1 text-xs text-white/45">
-          Esta es la URL de tu catálogo de inmuebles — se actualiza sola cada
-          vez que publicas, editas o eliminas un inmueble. Úsala en Meta
-          Commerce Manager para que tus anuncios y tu catálogo de WhatsApp
-          siempre muestren el inventario real y actualizado.
+          Esta es la URL de tu catálogo — incluye los inmuebles publicados en
+          &quot;Inmuebles en Venta&quot; y los servicios a los que les hayas
+          puesto un precio de referencia en la pestaña &quot;Logo, Imágenes y
+          Anuncios&quot;. Se actualiza sola cada vez que publicas o editas
+          algo — no tienes que volver a subir nada a Meta.
+        </p>
+      </div>
+
+      <div className="rounded-2xl border border-amber-400/20 bg-amber-500/5 p-5">
+        <p className="text-xs text-white/70">
+          <span className="font-semibold text-amber-300">Importante:</span> un
+          servicio solo aparece en el catálogo si tiene{" "}
+          <span className="text-white/90">al menos una foto</span> (pestaña
+          &quot;Fotos de Servicios&quot;) y un{" "}
+          <span className="text-white/90">precio de referencia</span>{" "}
+          (pestaña &quot;Logo, Imágenes y Anuncios&quot; → &quot;Precios de
+          referencia para el catálogo de Meta&quot;). Un inmueble solo
+          aparece si tiene al menos una foto.
         </p>
       </div>
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getIsAdminAuthenticated } from "@/lib/auth";
 import { getSiteSettings, updateSiteSettings } from "@/lib/siteSettings";
+import { SERVICES } from "@/lib/services";
 import {
   SOCIAL_PLATFORMS,
   type LogoAlign,
@@ -9,6 +10,9 @@ import {
   type SiteStat,
   type SocialLinks,
 } from "@/lib/siteSettingsTypes";
+
+const SERVICE_SLUGS = new Set(SERVICES.map((s) => s.slug));
+const MAX_SERVICE_PRICE = 100_000_000_000;
 
 export const dynamic = "force-dynamic";
 
@@ -104,6 +108,21 @@ export async function PUT(request: NextRequest) {
       );
     }
     update.stats = stats;
+  }
+
+  if (body.servicePrices !== undefined) {
+    if (typeof body.servicePrices !== "object" || body.servicePrices === null) {
+      return NextResponse.json({ error: "Precios de servicios inválidos." }, { status: 400 });
+    }
+    const servicePrices: Record<string, number> = {};
+    for (const [slug, raw] of Object.entries(body.servicePrices as Record<string, unknown>)) {
+      if (!SERVICE_SLUGS.has(slug)) continue;
+      const price = Number(raw);
+      if (Number.isFinite(price) && price > 0 && price <= MAX_SERVICE_PRICE) {
+        servicePrices[slug] = Math.round(price);
+      }
+    }
+    update.servicePrices = servicePrices;
   }
 
   try {

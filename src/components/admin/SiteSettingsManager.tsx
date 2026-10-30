@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { BarChart3, Megaphone, Plus, Share2, Trash2 } from "lucide-react";
+import { BarChart3, Megaphone, Plus, Share2, ShoppingBag, Trash2 } from "lucide-react";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -10,6 +10,7 @@ import {
   XIcon,
   YouTubeIcon,
 } from "@/components/SocialIcons";
+import { SERVICES } from "@/lib/services";
 import {
   LOGO_ALIGN_LABELS,
   LOGO_SIZE_LABELS,
@@ -51,6 +52,9 @@ export default function SiteSettingsManager({
   const [newAnnouncement, setNewAnnouncement] = useState("");
   const [socialLinks, setSocialLinks] = useState<SocialLinks>(initialSettings.socialLinks);
   const [stats, setStats] = useState<SiteStat[]>(initialSettings.stats);
+  const [servicePrices, setServicePrices] = useState<Record<string, number>>(
+    initialSettings.servicePrices
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -139,6 +143,23 @@ export default function SiteSettingsManager({
       save({ stats: next });
       return next;
     });
+  }
+
+  function handleServicePriceChange(slug: string, raw: string) {
+    setServicePrices((prev) => {
+      const next = { ...prev };
+      const price = Number(raw);
+      if (raw.trim() === "" || !Number.isFinite(price) || price <= 0) {
+        delete next[slug];
+      } else {
+        next[slug] = price;
+      }
+      return next;
+    });
+  }
+
+  function handleServicePriceBlur() {
+    save({ servicePrices });
   }
 
   return (
@@ -383,6 +404,49 @@ export default function SiteSettingsManager({
         >
           <Plus className="h-4 w-4" /> Agregar cifra
         </button>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-ink-950/50 p-5">
+        <div className="flex items-center gap-2">
+          <ShoppingBag className="h-4 w-4 text-brand-400" />
+          <h3 className="font-display text-sm font-bold">
+            Precios de referencia para el catálogo de Meta
+          </h3>
+        </div>
+        <p className="mt-1 text-xs text-white/45">
+          Tus servicios no tienen un precio fijo, pero Meta exige un precio
+          por cada artículo del catálogo. Pon aquí un precio &quot;desde&quot;
+          para cada servicio que quieras que aparezca en tus anuncios y en el
+          catálogo de WhatsApp — deja en blanco los que no quieras incluir.
+        </p>
+
+        <div className="mt-4 space-y-3">
+          {SERVICES.map((service) => (
+            <div
+              key={service.slug}
+              className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink-900/40 p-3"
+            >
+              <span className="flex-1 text-sm text-white/80">
+                {service.shortTitle}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-white/40">Desde $</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={servicePrices[service.slug] ?? ""}
+                  onChange={(e) =>
+                    handleServicePriceChange(service.slug, e.target.value)
+                  }
+                  onBlur={handleServicePriceBlur}
+                  placeholder="Ej: 8000000"
+                  className="w-32 rounded-lg border border-white/15 bg-ink-950 px-2.5 py-2 text-sm outline-none focus:border-brand-500"
+                />
+                <span className="text-xs text-white/40">COP</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {saving && <p className="text-xs text-white/40">Guardando...</p>}

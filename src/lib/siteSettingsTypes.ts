@@ -24,6 +24,11 @@ export interface SiteSettings {
   announcements: string[];
   socialLinks: SocialLinks;
   stats: SiteStat[];
+  // Reference "starting from" price (in COP) per service slug — services
+  // don't have a fixed price, but Meta's catalog feed requires a numeric
+  // price on every item, so only services with a price set here are
+  // eligible to appear in the Meta catalog (see lib/catalog/metaFeed.ts).
+  servicePrices: Record<string, number>;
 }
 
 export const DEFAULT_ANNOUNCEMENTS: string[] = [
@@ -48,6 +53,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   announcements: DEFAULT_ANNOUNCEMENTS,
   socialLinks: {},
   stats: DEFAULT_STATS,
+  servicePrices: {},
 };
 
 export const LOGO_SIZE_LABELS: Record<LogoSize, string> = {

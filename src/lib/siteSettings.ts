@@ -1,4 +1,5 @@
 import { getDb } from "./firebaseAdmin";
+import { SERVICES } from "./services";
 import {
   DEFAULT_SITE_SETTINGS,
   SOCIAL_PLATFORMS,
@@ -8,6 +9,8 @@ import {
   type SiteStat,
   type SocialLinks,
 } from "./siteSettingsTypes";
+
+const SERVICE_SLUGS = new Set(SERVICES.map((s) => s.slug));
 
 export type {
   SiteSettings,
@@ -56,6 +59,17 @@ function parseStats(value: unknown): SiteStat[] {
   return stats.length > 0 ? stats : DEFAULT_SITE_SETTINGS.stats;
 }
 
+function parseServicePrices(value: unknown): Record<string, number> {
+  if (!value || typeof value !== "object") return {};
+  const prices: Record<string, number> = {};
+  for (const [slug, raw] of Object.entries(value as Record<string, unknown>)) {
+    if (!SERVICE_SLUGS.has(slug)) continue;
+    const price = Number(raw);
+    if (Number.isFinite(price) && price > 0) prices[slug] = price;
+  }
+  return prices;
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
   const doc = await getDb().collection(COLLECTION).doc(DOC_ID).get();
   const data = doc.data();
@@ -72,6 +86,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       : DEFAULT_SITE_SETTINGS.announcements,
     socialLinks: parseSocialLinks(data.socialLinks),
     stats: parseStats(data.stats),
+    servicePrices: parseServicePrices(data.servicePrices),
   };
 }
 
