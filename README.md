@@ -125,6 +125,11 @@ NEXT_PUBLIC_META_PIXEL_ID=
 
 ADMIN_PASSWORD=elige-una-contraseña-segura
 ADMIN_SESSION_SECRET=una-cadena-aleatoria-larga
+
+# Opcional — activa /admin/agencia (aviso interno de pago pendiente que ve
+# el cliente dentro del panel). Define esta clave solo si vas a usar esa
+# función; sin ella, esa página no deja entrar a nadie.
+AGENCY_SECRET=
 ```
 
 - `ADMIN_PASSWORD`: contraseña para entrar a `/admin/login`. Si no se

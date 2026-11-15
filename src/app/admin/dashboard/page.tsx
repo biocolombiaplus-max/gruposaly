@@ -4,7 +4,9 @@ import { getAllServiceImages } from "@/lib/serviceImages";
 import { getAllProperties } from "@/lib/properties";
 import { getAllSiteImages } from "@/lib/siteImages";
 import { getSiteSettings } from "@/lib/siteSettings";
+import { getBillingReminder } from "@/lib/billingReminder";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import PaymentReminderModal from "@/components/admin/PaymentReminderModal";
 
 export const dynamic = "force-dynamic";
 
@@ -13,19 +15,24 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const [serviceImages, properties, siteImages, siteSettings] = await Promise.all([
-    getAllServiceImages(),
-    getAllProperties(),
-    getAllSiteImages(),
-    getSiteSettings(),
-  ]);
+  const [serviceImages, properties, siteImages, siteSettings, billingReminder] =
+    await Promise.all([
+      getAllServiceImages(),
+      getAllProperties(),
+      getAllSiteImages(),
+      getSiteSettings(),
+      getBillingReminder(),
+    ]);
 
   return (
-    <AdminDashboard
-      initialServiceImages={serviceImages}
-      initialProperties={properties}
-      initialSiteImages={siteImages}
-      initialSiteSettings={siteSettings}
-    />
+    <>
+      <PaymentReminderModal reminder={billingReminder} />
+      <AdminDashboard
+        initialServiceImages={serviceImages}
+        initialProperties={properties}
+        initialSiteImages={siteImages}
+        initialSiteSettings={siteSettings}
+      />
+    </>
   );
 }
