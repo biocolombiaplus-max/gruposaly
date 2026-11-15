@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Images, LogOut, Building, FileText, LayoutTemplate, ShoppingBag, BarChart3 } from "lucide-react";
+import { Images, LogOut, Building, FileText, LayoutTemplate, ShoppingBag, BarChart3, CalendarDays } from "lucide-react";
 import ServiceImagesManager from "./ServiceImagesManager";
 import PropertiesManager from "./PropertiesManager";
 import SiteImagesManager from "./SiteImagesManager";
@@ -11,12 +11,20 @@ import BrochureGenerator from "./BrochureGenerator";
 import MetaCatalogCard from "./MetaCatalogCard";
 import ServiceAdsKit from "./ServiceAdsKit";
 import AnalyticsDashboard from "./AnalyticsDashboard";
+import ContentCalendarCard from "./ContentCalendarCard";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
 import type { SiteSettings } from "@/lib/siteSettingsTypes";
 
-type Tab = "servicios" | "inmuebles" | "sitio" | "brochure" | "catalogo" | "rendimiento";
+type Tab =
+  | "servicios"
+  | "inmuebles"
+  | "sitio"
+  | "brochure"
+  | "catalogo"
+  | "rendimiento"
+  | "contenido";
 
 export default function AdminDashboard({
   initialServiceImages,
@@ -45,6 +53,7 @@ export default function AdminDashboard({
     { id: "brochure", label: "Brochure PDF", icon: FileText },
     { id: "catalogo", label: "Catálogo Meta Ads", icon: ShoppingBag },
     { id: "rendimiento", label: "Rendimiento", icon: BarChart3 },
+    { id: "contenido", label: "Calendario de Contenido", icon: CalendarDays },
   ];
 
   return (
@@ -105,6 +114,7 @@ export default function AdminDashboard({
           </div>
         )}
         {tab === "rendimiento" && <AnalyticsDashboard />}
+        {tab === "contenido" && <ContentCalendarCard />}
       </div>
     </div>
   );
