@@ -25,13 +25,13 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-ink-950 py-24 sm:py-32">
+    <section className="bg-stone-50 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
             Testimonios
           </p>
-          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl">
             Clientes que confiaron su proyecto en nosotros
           </h2>
         </FadeIn>
@@ -39,18 +39,18 @@ export default function Testimonials() {
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <FadeIn key={t.name} delay={i * 0.1}>
-              <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-ink-900 to-ink-950 p-8">
-                <div className="flex gap-1 text-brand-400">
+              <div className="flex h-full flex-col rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
+                <div className="flex gap-1 text-brand-500">
                   {Array.from({ length: 5 }).map((_, s) => (
                     <Star key={s} className="h-4 w-4 fill-current" />
                   ))}
                 </div>
-                <p className="mt-5 flex-1 text-balance leading-relaxed text-white/70">
+                <p className="mt-5 flex-1 text-balance leading-relaxed text-ink-950/70">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="mt-6 border-t border-white/10 pt-5">
-                  <p className="font-display font-bold">{t.name}</p>
-                  <p className="text-xs text-white/45">{t.role}</p>
+                <div className="mt-6 border-t border-stone-200 pt-5">
+                  <p className="font-display font-bold text-ink-950">{t.name}</p>
+                  <p className="text-xs text-ink-950/45">{t.role}</p>
                 </div>
               </div>
             </FadeIn>
@@ -58,7 +58,7 @@ export default function Testimonials() {
         </div>
 
         <FadeIn delay={0.25} className="mt-14 flex flex-col items-center gap-3 text-center">
-          <p className="text-sm text-white/50">
+          <p className="text-sm text-ink-950/50">
             Sé el próximo cliente satisfecho de Grupo Saly.
           </p>
           <WhatsAppButton

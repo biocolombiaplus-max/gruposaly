@@ -32,7 +32,7 @@ export default function PropertiesExplorer({
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2.5">
-        <span className="mr-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-white/40">
+        <span className="mr-1 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-ink-950/40">
           <SlidersHorizontal className="h-3.5 w-3.5" />
           Filtrar
         </span>
@@ -44,7 +44,7 @@ export default function PropertiesExplorer({
               "rounded-full border px-4 py-2 text-sm font-semibold transition-colors " +
               (filter === f.value
                 ? "border-brand-500 bg-brand-500 text-ink-950"
-                : "border-white/15 text-white/70 hover:border-brand-400/50 hover:text-white")
+                : "border-stone-300 text-ink-950/70 hover:border-brand-400/50 hover:text-ink-950")
             }
           >
             {f.label}
@@ -53,13 +53,13 @@ export default function PropertiesExplorer({
       </div>
 
       {filtered.length === 0 ? (
-        <div className="mt-16 rounded-3xl border border-dashed border-white/15 py-20 text-center">
-          <p className="font-display text-lg font-bold text-white/70">
+        <div className="mt-16 rounded-3xl border border-dashed border-stone-300 py-20 text-center">
+          <p className="font-display text-lg font-bold text-ink-950/70">
             {properties.length === 0
               ? "Muy pronto nuevos proyectos disponibles"
               : "No hay inmuebles en esta categoría por ahora"}
           </p>
-          <p className="mt-2 text-sm text-white/45">
+          <p className="mt-2 text-sm text-ink-950/45">
             Escríbenos por WhatsApp y te avisamos apenas tengamos nuevas
             opciones para ti.
           </p>

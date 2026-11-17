@@ -11,13 +11,13 @@ export default function WorkShowcase({ images }: WorkShowcaseProps) {
   const track = [...images, ...images];
 
   return (
-    <section className="overflow-hidden border-y border-white/10 bg-ink-950 py-20 sm:py-24">
+    <section className="overflow-hidden border-y border-stone-200 bg-stone-50 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
             Nuestro Trabajo
           </p>
-          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl">
             Proyectos que hablan por sí solos
           </h2>
         </FadeIn>
@@ -28,7 +28,7 @@ export default function WorkShowcase({ images }: WorkShowcaseProps) {
           {track.map((src, i) => (
             <div
               key={`${src}-${i}`}
-              className="w-56 shrink-0 overflow-hidden rounded-2xl border border-white/10 sm:w-72"
+              className="w-56 shrink-0 overflow-hidden rounded-2xl border border-stone-200 shadow-sm sm:w-72"
             >
               <MediaFrame src={src} alt="Proyecto de Grupo Saly" aspect="aspect-[4/3]" />
             </div>

@@ -8,12 +8,14 @@ interface CopyLinkButtonProps {
   path: string;
   label?: string;
   className?: string;
+  variant?: "dark" | "light";
 }
 
 export default function CopyLinkButton({
   path,
   label = "Copiar enlace",
   className,
+  variant = "dark",
 }: CopyLinkButtonProps) {
   const [copied, setCopied] = useState(false);
 
@@ -33,7 +35,10 @@ export default function CopyLinkButton({
       type="button"
       onClick={handleCopy}
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white/85 transition-colors hover:border-brand-400/50 hover:bg-white/5",
+        "inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors hover:border-brand-400/50",
+        variant === "light"
+          ? "border-stone-300 text-ink-950/85 hover:bg-ink-950/5"
+          : "border-white/15 text-white/85 hover:bg-white/5",
         className
       )}
     >

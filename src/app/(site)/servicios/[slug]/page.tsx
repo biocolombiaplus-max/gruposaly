@@ -45,38 +45,36 @@ export default async function ServicePage({
 
   return (
     <>
-      <section className="relative overflow-hidden bg-ink-950 pt-[10.25rem] pb-20 sm:pt-[12.25rem] sm:pb-28">
+      <section className="relative overflow-hidden bg-stone-50 pt-[10.25rem] pb-20 sm:pt-[12.25rem] sm:pb-28">
         <div
-          className={`absolute inset-0 bg-gradient-to-br ${service.heroGradient} opacity-[0.14]`}
+          className={`absolute inset-0 bg-gradient-to-br ${service.heroGradient} opacity-[0.07]`}
         />
-        <div className="absolute inset-0 bg-noise opacity-10" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink-950 to-transparent" />
 
         <div className="relative mx-auto max-w-4xl px-5 text-center sm:px-8">
           <FadeIn>
-            <nav className="mb-6 flex items-center justify-center gap-2 text-xs text-white/45">
-              <Link href="/" className="hover:text-brand-400">
+            <nav className="mb-6 flex items-center justify-center gap-2 text-xs text-ink-950/45">
+              <Link href="/" className="hover:text-brand-600">
                 Inicio
               </Link>
               <span>/</span>
-              <Link href="/#servicios" className="hover:text-brand-400">
+              <Link href="/#servicios" className="hover:text-brand-600">
                 Servicios
               </Link>
               <span>/</span>
-              <span className="text-white/70">{service.shortTitle}</span>
+              <span className="text-ink-950/70">{service.shortTitle}</span>
             </nav>
 
-            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-400/30 bg-brand-500/15 text-brand-300">
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-400/30 bg-brand-500/15 text-brand-600">
               <Icon className="h-8 w-8" strokeWidth={1.7} />
             </span>
 
-            <h1 className="mt-6 text-balance font-display text-3xl font-black tracking-tight sm:text-5xl">
+            <h1 className="mt-6 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-5xl">
               {service.title}
             </h1>
-            <p className="mt-4 text-balance text-lg text-brand-300">
+            <p className="mt-4 text-balance text-lg text-brand-600">
               {service.tagline}
             </p>
-            <p className="mx-auto mt-5 max-w-2xl text-balance leading-relaxed text-white/60">
+            <p className="mx-auto mt-5 max-w-2xl text-balance leading-relaxed text-ink-950/60">
               {service.description}
             </p>
 
@@ -91,13 +89,13 @@ export default async function ServicePage({
         </div>
       </section>
 
-      <section className="bg-ink-950 pb-24">
+      <section className="bg-stone-50 pb-24">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 px-5 sm:px-8 lg:grid-cols-[1.2fr_1fr]">
           <FadeIn>
-            <h2 className="font-display text-2xl font-bold tracking-tight">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink-950">
               Sobre este servicio
             </h2>
-            <div className="mt-5 space-y-4 text-balance leading-relaxed text-white/65">
+            <div className="mt-5 space-y-4 text-balance leading-relaxed text-ink-950/65">
               {service.longDescription.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
@@ -105,14 +103,14 @@ export default async function ServicePage({
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="rounded-3xl border border-white/10 bg-ink-900 p-7">
-              <h3 className="font-display text-lg font-bold">
+            <div className="rounded-3xl border border-stone-200 bg-white p-7 shadow-sm">
+              <h3 className="font-display text-lg font-bold text-ink-950">
                 Lo que incluye
               </h3>
               <ul className="mt-5 space-y-3.5">
                 {service.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-sm text-white/75">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
+                  <li key={feature} className="flex items-start gap-3 text-sm text-ink-950/75">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
                     {feature}
                   </li>
                 ))}
@@ -130,13 +128,13 @@ export default async function ServicePage({
       </section>
 
       {images.length > 0 && (
-        <section className="border-t border-white/10 bg-ink-900 py-20 sm:py-24">
+        <section className="border-t border-stone-200 bg-white py-20 sm:py-24">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <FadeIn>
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
                 Galería
               </p>
-              <h2 className="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+              <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink-950 sm:text-3xl">
                 Proyectos de {service.shortTitle.toLowerCase()}
               </h2>
             </FadeIn>
@@ -147,15 +145,15 @@ export default async function ServicePage({
         </section>
       )}
 
-      <section className="bg-ink-950 py-20 sm:py-24">
+      <section className="bg-stone-50 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <FadeIn className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-bold tracking-tight">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink-950">
               Otros servicios
             </h2>
             <Link
               href="/#servicios"
-              className="hidden items-center gap-1.5 text-sm font-semibold text-brand-400 hover:text-brand-300 sm:inline-flex"
+              className="hidden items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700 sm:inline-flex"
             >
               Ver todos <ArrowRight className="h-4 w-4" />
             </Link>
@@ -167,13 +165,13 @@ export default async function ServicePage({
                 <Link
                   key={other.slug}
                   href={`/servicios/${other.slug}`}
-                  className="group flex flex-col rounded-2xl border border-white/10 bg-ink-900 p-6 transition-all hover:-translate-y-1 hover:border-brand-500/40"
+                  className="group flex flex-col rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-brand-500/40"
                 >
-                  <OtherIcon className="h-6 w-6 text-brand-400" strokeWidth={1.7} />
-                  <span className="mt-4 font-display font-bold">
+                  <OtherIcon className="h-6 w-6 text-brand-600" strokeWidth={1.7} />
+                  <span className="mt-4 font-display font-bold text-ink-950">
                     {other.shortTitle}
                   </span>
-                  <span className="mt-1 text-sm text-white/50">
+                  <span className="mt-1 text-sm text-ink-950/50">
                     {other.tagline}
                   </span>
                 </Link>

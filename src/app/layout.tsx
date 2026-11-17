@@ -46,7 +46,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className="h-full antialiased">
-      <body className="flex min-h-full flex-col bg-ink-950 font-body text-white">
+      <body className="flex min-h-full flex-col bg-stone-50 font-body text-ink-950">
         <MetaPixel />
         {children}
       </body>

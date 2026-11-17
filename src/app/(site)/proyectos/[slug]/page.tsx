@@ -70,43 +70,43 @@ export default async function PropertyPage({
     .slice(0, 3);
 
   return (
-    <div className="bg-ink-950 pt-[9.25rem] pb-24 sm:pt-[10.25rem]">
+    <div className="bg-stone-50 pt-[9.25rem] pb-24 sm:pt-[10.25rem]">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-white/45">
-          <Link href="/" className="hover:text-brand-400">
+        <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-ink-950/45">
+          <Link href="/" className="hover:text-brand-600">
             Inicio
           </Link>
           <span>/</span>
-          <Link href="/proyectos" className="hover:text-brand-400">
+          <Link href="/proyectos" className="hover:text-brand-600">
             Proyectos en Venta
           </Link>
           <span>/</span>
-          <span className="text-white/70">{property.title}</span>
+          <span className="text-ink-950/70">{property.title}</span>
         </nav>
 
         <FadeIn>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-brand-500/15 px-3 py-1 text-xs font-semibold text-brand-300">
+            <span className="rounded-full bg-brand-500/15 px-3 py-1 text-xs font-semibold text-brand-600">
               {PROPERTY_TYPE_LABELS[property.type]}
             </span>
             <span
               className={
                 "rounded-full px-3 py-1 text-xs font-semibold " +
                 (property.status === "disponible"
-                  ? "bg-emerald-500/15 text-emerald-400"
+                  ? "bg-emerald-500/15 text-emerald-600"
                   : property.status === "reservado"
-                  ? "bg-amber-400/15 text-amber-300"
-                  : "bg-white/10 text-white/60")
+                  ? "bg-amber-400/20 text-amber-700"
+                  : "bg-stone-200 text-ink-950/60")
               }
             >
               {PROPERTY_STATUS_LABELS[property.status]}
             </span>
           </div>
-          <h1 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-4xl">
+          <h1 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl">
             {property.title}
           </h1>
-          <p className="mt-2 inline-flex items-center gap-1.5 text-white/55">
-            <MapPin className="h-4 w-4 text-brand-400" /> {property.location}
+          <p className="mt-2 inline-flex items-center gap-1.5 text-ink-950/55">
+            <MapPin className="h-4 w-4 text-brand-500" /> {property.location}
           </p>
         </FadeIn>
 
@@ -118,8 +118,8 @@ export default async function PropertyPage({
 
             {property.description && (
               <FadeIn delay={0.1} className="mt-10">
-                <h2 className="font-display text-xl font-bold">Descripción</h2>
-                <p className="mt-4 whitespace-pre-line text-balance leading-relaxed text-white/65">
+                <h2 className="font-display text-xl font-bold text-ink-950">Descripción</h2>
+                <p className="mt-4 whitespace-pre-line text-balance leading-relaxed text-ink-950/65">
                   {property.description}
                 </p>
               </FadeIn>
@@ -127,16 +127,16 @@ export default async function PropertyPage({
 
             {property.features.length > 0 && (
               <FadeIn delay={0.15} className="mt-10">
-                <h2 className="font-display text-xl font-bold">
+                <h2 className="font-display text-xl font-bold text-ink-950">
                   Características
                 </h2>
                 <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                   {property.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-start gap-2.5 text-sm text-white/70"
+                      className="flex items-start gap-2.5 text-sm text-ink-950/70"
                     >
-                      <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-brand-400" />
+                      <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-brand-600" />
                       {feature}
                     </li>
                   ))}
@@ -146,17 +146,17 @@ export default async function PropertyPage({
 
             {newProject && (
               <FadeIn delay={0.2} className="mt-10">
-                <h2 className="font-display text-xl font-bold">
+                <h2 className="font-display text-xl font-bold text-ink-950">
                   Condiciones del Proyecto
                 </h2>
                 <div className="mt-4 grid grid-cols-1 gap-4 rounded-2xl border border-brand-500/20 bg-brand-500/5 p-6 sm:grid-cols-2">
                   {(newProject.separationLabel ||
                     typeof newProject.separationAmount === "number") && (
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Separación
                       </p>
-                      <p className="mt-1 font-display text-lg font-bold text-emerald-400">
+                      <p className="mt-1 font-display text-lg font-bold text-emerald-600">
                         {newProject.separationLabel ||
                           formatCOP(newProject.separationAmount!)}
                       </p>
@@ -164,52 +164,52 @@ export default async function PropertyPage({
                   )}
                   {newProject.stage && (
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Etapa del proyecto
                       </p>
-                      <p className="mt-1 font-semibold text-white/85">
+                      <p className="mt-1 font-semibold text-ink-950/85">
                         {NEW_PROJECT_STAGE_LABELS[newProject.stage]}
                       </p>
                     </div>
                   )}
                   {newProject.deliveryDate && (
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Entrega estimada
                       </p>
-                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-white/85">
-                        <Calendar className="h-4 w-4 text-brand-400" />
+                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-ink-950/85">
+                        <Calendar className="h-4 w-4 text-brand-600" />
                         {newProject.deliveryDate}
                       </p>
                     </div>
                   )}
                   {newProject.financingAvailable && (
                     <div>
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Financiación
                       </p>
-                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-white/85">
-                        <Landmark className="h-4 w-4 text-brand-400" />
+                      <p className="mt-1 flex items-center gap-1.5 font-semibold text-ink-950/85">
+                        <Landmark className="h-4 w-4 text-brand-600" />
                         Te ayudamos con el crédito hipotecario
                       </p>
                     </div>
                   )}
                   {newProject.paymentPlan && (
                     <div className="sm:col-span-2">
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Forma de pago
                       </p>
-                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-white/75">
+                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-ink-950/75">
                         {newProject.paymentPlan}
                       </p>
                     </div>
                   )}
                   {newProject.additionalConditions && (
                     <div className="sm:col-span-2">
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-ink-950/40">
                         Condiciones adicionales
                       </p>
-                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-white/75">
+                      <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-ink-950/75">
                         {newProject.additionalConditions}
                       </p>
                     </div>
@@ -220,44 +220,44 @@ export default async function PropertyPage({
           </div>
 
           <FadeIn delay={0.1}>
-            <div className="sticky top-28 rounded-3xl border border-white/10 bg-ink-900 p-7">
-              <p className="text-xs uppercase tracking-widest text-white/40">
+            <div className="sticky top-28 rounded-3xl border border-stone-200 bg-white p-7 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-ink-950/40">
                 Precio
               </p>
-              <p className="mt-2 font-display text-3xl font-black text-brand-400">
+              <p className="mt-2 font-display text-3xl font-black text-brand-600">
                 {property.priceLabel || formatCOP(property.price)}
               </p>
               {(newProject?.separationLabel ||
                 typeof newProject?.separationAmount === "number") && (
-                <p className="mt-1.5 text-sm font-semibold text-emerald-400">
+                <p className="mt-1.5 text-sm font-semibold text-emerald-600">
                   Separa desde{" "}
                   {newProject.separationLabel ||
                     formatCOP(newProject.separationAmount!)}
                 </p>
               )}
 
-              <div className="mt-6 grid grid-cols-2 gap-3 border-y border-white/10 py-5">
+              <div className="mt-6 grid grid-cols-2 gap-3 border-y border-stone-200 py-5">
                 {typeof property.areaM2 === "number" && (
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Ruler className="h-4.5 w-4.5 text-brand-400" />
+                  <div className="flex items-center gap-2 text-sm text-ink-950/70">
+                    <Ruler className="h-4.5 w-4.5 text-brand-600" />
                     {property.areaM2} m²
                   </div>
                 )}
                 {typeof property.bedrooms === "number" && (
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <BedDouble className="h-4.5 w-4.5 text-brand-400" />
+                  <div className="flex items-center gap-2 text-sm text-ink-950/70">
+                    <BedDouble className="h-4.5 w-4.5 text-brand-600" />
                     {property.bedrooms} habitaciones
                   </div>
                 )}
                 {typeof property.bathrooms === "number" && (
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Bath className="h-4.5 w-4.5 text-brand-400" />
+                  <div className="flex items-center gap-2 text-sm text-ink-950/70">
+                    <Bath className="h-4.5 w-4.5 text-brand-600" />
                     {property.bathrooms} baños
                   </div>
                 )}
                 {typeof property.parking === "number" && (
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Car className="h-4.5 w-4.5 text-brand-400" />
+                  <div className="flex items-center gap-2 text-sm text-ink-950/70">
+                    <Car className="h-4.5 w-4.5 text-brand-600" />
                     {property.parking} parqueaderos
                   </div>
                 )}
@@ -274,16 +274,16 @@ export default async function PropertyPage({
                   href={whatsappLink(creditMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-6 py-3 text-sm font-bold text-brand-300 transition-colors hover:bg-brand-500/20"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-6 py-3 text-sm font-bold text-brand-600 transition-colors hover:bg-brand-500/20"
                 >
                   <CreditCard className="h-4.5 w-4.5" />
                   Crédito Directo
                 </a>
-                <CopyLinkButton path={path} className="w-full" />
+                <CopyLinkButton path={path} variant="light" className="w-full" />
               </div>
 
-              <div className="mt-5 flex items-start gap-2.5 rounded-2xl border border-white/10 bg-ink-950/60 p-4 text-xs leading-relaxed text-white/55">
-                <Landmark className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />
+              <div className="mt-5 flex items-start gap-2.5 rounded-2xl border border-stone-200 bg-stone-50 p-4 text-xs leading-relaxed text-ink-950/55">
+                <Landmark className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
                 Analizamos tu caso, hacemos la consulta y te acompañamos en
                 todo el trámite para que consigas tu crédito — sin costo por
                 la asesoría.
@@ -294,7 +294,7 @@ export default async function PropertyPage({
 
         {related.length > 0 && (
           <div className="mt-20">
-            <h2 className="font-display text-2xl font-bold tracking-tight">
+            <h2 className="font-display text-2xl font-bold tracking-tight text-ink-950">
               Otros inmuebles similares
             </h2>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

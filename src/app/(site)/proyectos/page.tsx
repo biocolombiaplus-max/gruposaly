@@ -16,16 +16,16 @@ export default async function ProyectosPage() {
   const properties = await getAllProperties();
 
   return (
-    <div className="bg-ink-950 pt-[10.25rem] pb-24 sm:pt-[12.25rem]">
+    <div className="bg-stone-50 pt-[10.25rem] pb-24 sm:pt-[12.25rem]">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
             Módulo de Ventas
           </p>
-          <h1 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-5xl">
+          <h1 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-5xl">
             Venta de Proyectos de Vivienda
           </h1>
-          <p className="mt-4 text-balance text-white/60">
+          <p className="mt-4 text-balance text-ink-950/60">
             Casas, edificios, locales comerciales y bodegas listos para
             invertir. Consulta directamente por WhatsApp sobre el inmueble
             que te interese.

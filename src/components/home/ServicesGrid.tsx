@@ -18,16 +18,16 @@ export default function ServicesGrid({
   ventasCount,
 }: ServicesGridProps) {
   return (
-    <section id="servicios" className="relative bg-ink-950 py-24 sm:py-32">
+    <section id="servicios" className="relative bg-stone-50 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
             Nuestros Servicios
           </p>
-          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl lg:text-5xl">
             Un equipo. Todas las etapas de tu proyecto.
           </h2>
-          <p className="mt-4 text-balance text-white/60">
+          <p className="mt-4 text-balance text-ink-950/60">
             Desde la remodelación de un espacio hasta la construcción integral
             de infraestructura hospitalaria, edificios o bodegas — y la venta
             de proyectos de vivienda listos para invertir.
@@ -42,7 +42,7 @@ export default function ServicesGrid({
               <FadeIn key={service.slug} delay={(i % 3) * 0.08}>
                 <Link
                   href={`/servicios/${service.slug}`}
-                  className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-3xl border border-white/10 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand-500/40 hover:shadow-2xl hover:shadow-brand-900/40"
+                  className="group relative flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-3xl border border-stone-200 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-brand-500/40 hover:shadow-2xl hover:shadow-brand-900/20"
                 >
                   <div className="absolute inset-0">
                     {cover ? (
@@ -72,7 +72,7 @@ export default function ServicesGrid({
                   </div>
 
                   <div className="relative p-6 pt-0">
-                    <h3 className="font-display text-xl font-bold tracking-tight">
+                    <h3 className="font-display text-xl font-bold tracking-tight text-white">
                       {service.shortTitle}
                     </h3>
                     <p className="mt-2 line-clamp-2 text-sm text-white/60">
@@ -107,7 +107,7 @@ export default function ServicesGrid({
                 <span className="inline-flex items-center gap-2 rounded-full bg-brand-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand-300">
                   Módulo de Ventas
                 </span>
-                <h3 className="mt-4 font-display text-2xl font-black tracking-tight sm:text-3xl">
+                <h3 className="mt-4 font-display text-2xl font-black tracking-tight text-white sm:text-3xl">
                   {VENTAS_SERVICE.title}
                 </h3>
                 <p className="mt-2 max-w-xl text-white/60">

@@ -43,18 +43,18 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-ink-900 py-24 sm:py-32">
+    <section className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-3xl px-5 sm:px-8">
         <FadeIn className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
             Preguntas Frecuentes
           </p>
-          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl">
             Resolvemos tus dudas antes de empezar
           </h2>
         </FadeIn>
 
-        <div className="mt-12 divide-y divide-white/10 rounded-3xl border border-white/10 bg-ink-950/50">
+        <div className="mt-12 divide-y divide-stone-200 rounded-3xl border border-stone-200 bg-stone-50">
           {FAQS.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
@@ -64,11 +64,11 @@ export default function FAQSection() {
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-display text-sm font-bold sm:text-base">
+                  <span className="font-display text-sm font-bold text-ink-950 sm:text-base">
                     {faq.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-brand-400 transition-transform duration-300 ${
+                    className={`h-5 w-5 shrink-0 text-brand-600 transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -82,7 +82,7 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="px-6 pb-5 text-sm leading-relaxed text-white/60">
+                      <p className="px-6 pb-5 text-sm leading-relaxed text-ink-950/60">
                         {faq.answer}
                       </p>
                     </motion.div>
@@ -94,7 +94,7 @@ export default function FAQSection() {
         </div>
 
         <FadeIn delay={0.1} className="mt-10 text-center">
-          <p className="text-sm text-white/50">¿Tienes otra pregunta?</p>
+          <p className="text-sm text-ink-950/50">¿Tienes otra pregunta?</p>
           <div className="mt-4 flex justify-center">
             <WhatsAppButton
               message="Hola, tengo una pregunta sobre los servicios de Grupo Saly."

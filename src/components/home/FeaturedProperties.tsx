@@ -12,20 +12,20 @@ export default function FeaturedProperties({ properties }: FeaturedPropertiesPro
   if (properties.length === 0) return null;
 
   return (
-    <section className="bg-ink-900 py-24 sm:py-32">
+    <section className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <FadeIn className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600">
               Venta de Proyectos de Vivienda
             </p>
-            <h2 className="mt-4 max-w-xl text-balance font-display text-3xl font-black tracking-tight sm:text-4xl">
+            <h2 className="mt-4 max-w-xl text-balance font-display text-3xl font-black tracking-tight text-ink-950 sm:text-4xl">
               Inmuebles disponibles para invertir
             </h2>
           </div>
           <Link
             href="/proyectos"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white/85 transition-all hover:border-brand-400/50 hover:bg-white/5"
+            className="group inline-flex items-center gap-2 rounded-full border border-stone-300 px-6 py-3 text-sm font-semibold text-ink-950/85 transition-all hover:border-brand-400/50 hover:bg-ink-950/5"
           >
             Ver todos los inmuebles
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

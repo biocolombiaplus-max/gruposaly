@@ -85,8 +85,8 @@ html {
 }
 
 body {
-  background: var(--color-ink-950);
-  color: #f5f4f2;
+  background: #fafaf9;
+  color: var(--color-ink-950);
   font-family: var(--font-body);
 }
 

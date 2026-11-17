@@ -22,7 +22,7 @@ export default function PropertyCard({ property, origin }: PropertyCardProps) {
   const creditMessage = `Hola, quiero información sobre crédito directo para el inmueble "${property.title}" (${property.location}). ¿Me ayudan a analizar mi caso? ${url}`;
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-ink-900 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand-500/40 hover:shadow-2xl hover:shadow-brand-900/30">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-brand-500/40 hover:shadow-2xl hover:shadow-brand-900/15">
       <Link href={`/proyectos/${property.slug}`} className="block">
         <div className="relative">
           <MediaFrame
@@ -53,11 +53,11 @@ export default function PropertyCard({ property, origin }: PropertyCardProps) {
 
       <div className="flex flex-1 flex-col p-5">
         <Link href={`/proyectos/${property.slug}`}>
-          <h3 className="line-clamp-1 font-display text-lg font-bold tracking-tight transition-colors group-hover:text-brand-300">
+          <h3 className="line-clamp-1 font-display text-lg font-bold tracking-tight text-ink-950 transition-colors group-hover:text-brand-600">
             {property.title}
           </h3>
         </Link>
-        <p className="mt-1 line-clamp-1 text-sm text-white/50">{property.location}</p>
+        <p className="mt-1 line-clamp-1 text-sm text-ink-950/50">{property.location}</p>
 
         <p className="mt-3 font-display text-xl font-black text-brand-400">
           {property.priceLabel || formatCOP(property.price)}
@@ -71,7 +71,7 @@ export default function PropertyCard({ property, origin }: PropertyCardProps) {
           </p>
         )}
 
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-white/55">
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-ink-950/55">
           {typeof property.areaM2 === "number" && (
             <span className="inline-flex items-center gap-1.5">
               <Ruler className="h-3.5 w-3.5" /> {property.areaM2} m²
@@ -97,7 +97,7 @@ export default function PropertyCard({ property, origin }: PropertyCardProps) {
         <div className="mt-5 flex items-center gap-2">
           <Link
             href={`/proyectos/${property.slug}`}
-            className="flex-1 rounded-full border border-white/15 px-4 py-2.5 text-center text-xs font-semibold text-white/85 transition-colors hover:border-brand-400/50 hover:bg-white/5"
+            className="flex-1 rounded-full border border-stone-300 px-4 py-2.5 text-center text-xs font-semibold text-ink-950/85 transition-colors hover:border-brand-400/50 hover:bg-ink-950/5"
           >
             Ver Detalle
           </Link>
@@ -116,7 +116,7 @@ export default function PropertyCard({ property, origin }: PropertyCardProps) {
           href={whatsappLink(creditMessage)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 flex items-center justify-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2.5 text-center text-xs font-semibold text-brand-300 transition-colors hover:bg-brand-500/20"
+          className="mt-2 flex items-center justify-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2.5 text-center text-xs font-semibold text-brand-600 transition-colors hover:bg-brand-500/20"
         >
           <CreditCard className="h-3.5 w-3.5" />
           Crédito Directo — te ayudamos con el trámite
