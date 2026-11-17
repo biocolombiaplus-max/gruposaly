@@ -11,7 +11,7 @@ import BrochureGenerator from "./BrochureGenerator";
 import MetaCatalogCard from "./MetaCatalogCard";
 import ServiceAdsKit from "./ServiceAdsKit";
 import AnalyticsDashboard from "./AnalyticsDashboard";
-import ContentCalendarCard from "./ContentCalendarCard";
+import ContentCalendar from "./ContentCalendar";
 import type { ServiceImagesMap } from "@/lib/serviceImages";
 import type { Property } from "@/lib/propertyTypes";
 import type { SiteImagesMap } from "@/lib/siteImageTypes";
@@ -114,7 +114,7 @@ export default function AdminDashboard({
           </div>
         )}
         {tab === "rendimiento" && <AnalyticsDashboard />}
-        {tab === "contenido" && <ContentCalendarCard />}
+        {tab === "contenido" && <ContentCalendar />}
       </div>
     </div>
   );
